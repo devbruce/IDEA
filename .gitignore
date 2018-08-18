@@ -1,0 +1,9 @@
+# Except log and cache files
+*.log
+*.pyc
+.DS_Store
+
+# Except result_data(png, gexf, json...)
+IDEA_Interactive/static/IDEA_Interactive/result_data/*.gexf
+IDEA_Interactive/static/IDEA_Interactive/result_data/*.json
+IDEA_Simple/result_data/*.png

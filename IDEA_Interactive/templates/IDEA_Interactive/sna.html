@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="subtitle" align="left" style="margin:30px;">
+<img src="{% static 'IDEA_Interactive/web_images/sna_title.png' %}"></div>
+
+<div class="input">
+<form method="POST" class="post-form">{% csrf_token %}
+Edge Remove Threshold : {{ form.edge_remove_threshold }} <font size="1" color="green">[Range : 0 ~ 50]</font> <br><br>
+Node Num : {{ form.node_num }} <font size="1" color="green">[Range : 5 ~ 100]</font> <br><br>
+Stop Words : {{ form.stop_words }} <font size="1" color="green">default = null</font> <br><br><br>
+<b>Text Input</b><br>
+{{ form.text_input|attr:"rows:15"|attr:"cols:1000"}}<br>
+<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button> <br><br>
+
+<font size="1" color="gray">If Text_InputBox doesn't appear, click the submit button first. <br>
+Then, Text_InputBox will appear.</font>
+
+</form>
+
+</div>
+
+<div class="guide" align="left">
+<h3>사용방법</h3>
+<h6>1. 한 줄에 하나의 포스트로 인식합니다.<br>
+따라서 하나의 포스트로 인식시키고 싶다면 한줄에 입력해주세요.<br>
+(사회연결분석망은 각 포스트의 관계를 분석하기 때문에 이는 필수입니다.) <br><br>
+
+2. Edge Remove Threshold 는 default 값이 0입니다. <br>
+이 경우 각 단어사이의 edge가 제거없이 모두 표시됩니다. <br>
+하지만 글의 수가 많아질 경우 edge 의 수를 줄여주어야 관계를 파악하는데 수월합니다. <br>
+포스트의 갯수가 100개 미만일 경우 0, 100개이상 2, 1000개이상 4 정도가 적당합니다. <br>
+지나치게 큰 값은 오류를 일으키므로 적절하게 조절해주세요. <br><br>
+
+3. Node_Num 은 화면에 표시될 노드의 갯수입니다. <br>
+본인이 원하는 갯수를 입력하시면 됩니다.<br>
+하지만 지나치게 큰 수를 입력하게 된다면 결과값이 왜곡될 수 있으니 주의해주세요. <br><br>
+
+4. Stop Words (불용어) 는 결과값에서 제외할 단어를 의미합니다. <br>
+결과값에서 제외할 단어가 복수일 경우 <font color="red">,(콤마)</font>로 구분해주시길 바랍니다.
+</h6></div>
+
+<div class="back" align="center">
+<a href="{% url 'i_home' %}"><img src="{% static 'common/web_images/back.png' %}"></a></div>
+
+{% endblock %}

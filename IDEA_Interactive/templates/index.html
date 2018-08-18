@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<title>IDEA</title>
+		<link rel="stylesheet" href="{% static 'common/css/IDEA_CSS.css' %}">
+		<script type="text/javascript">
+			function loadingf() {
+				document.getElementById('loading').style.display='block';
+			}
+		</script>
+	</head>
+		<body>
+			<div id="main_title" align="center" style="margin:10px;">
+			<a href="{% url 'index' %}"><img src="{% static 'common/web_images/title.png' %}"></a></div>
+			<div class="contents">
+
+			{% block content %}
+
+		<div class="viz_type" align="center">
+			<a href="{% url 'IDEA_Interactive' %}" style="margin:10px" class="menu"><img src="{% static 'common/web_images/viz_interactive.png' %}"></a>
+			<a href="{% url 'IDEA_Simple' %}" style="margin:10px" class="menu"><img src="{% static 'common/web_images/viz_simple.png' %}"></a>
+		</div>
+		<div id="github_IDEA" align="center" style="margin:20px;">
+				<a href="https://github.com/DevBruce/IDEA" target="_blank">
+				<img src="{% static 'common/web_images/github_mark.png' %}"></a></div>
+		
+			{% endblock %}
+
+			</div>
+
+								
+	    <div id="loading" style="display:none"><img id="loading_image" src="{% static 'common/web_images/loading.gif' %}" alt="Loading..."></div>
+		</body>
+</html>

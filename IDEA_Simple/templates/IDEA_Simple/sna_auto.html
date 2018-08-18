@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="subtitle" align="center" style="margin:30px;">
+<img src="{% static 'IDEA_Simple/web_images/sna_title.png' %}"></div>
+
+<div class="guide" align="center" style="margin:25px;">
+<font color="gray" font size="4">구글의 검색결과를 <b>자동(Auto)</b>으로 크롤링하여 생성</font></div>
+
+<div class="input" style="float:left; width:50%;">
+<div style="margin-left:270px; margin-top:30px;">
+<form method="POST" class="post-form">{% csrf_token %}
+Edge Remove Threshold : {{ form.edge_remove_threshold }} <font size="1" color="green">[Range : 0 ~ 5]</font> <br><br>
+Node Num : {{ form.node_num }} <font size="1" color="green">[Range : 5 ~ 100]</font> <br><br>
+Page Range : {{ form.page_range }} <font size="1" color="green">[Range : 1 ~ 100]</font> <br><br>
+Stop Words : {{ form.stop_words }} <font size="1" color="green">default = null</font> <br><br><br><br>
+<b>Keyword</b> : {{ form.keyword }}
+<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button>
+</form></div>
+</div>
+
+<div class="guide" style="float:left; width:50%;">
+<div style="margin-left:110px">
+<h3>사용방법</h3>
+<h6>1. 자동생성모드에 해당하므로 생성시간이 최소 10초 소모됩니다. <br><br>
+
+2. Edge Remove Threshold 는 default 값이 0입니다. <br>
+이 경우 각 단어사이의 edge가 제거없이 모두 표시됩니다. <br>
+하지만 글의 수가 많아질 경우 edge 의 수를 줄여주어야 관계를 파악하는데 수월합니다. <br>
+포스트의 갯수가 100개 미만일 경우 0, 100개이상 2, 1000개이상 4 정도가 적당합니다. <br>
+지나치게 큰 값은 오류를 일으키므로 적절하게 조절해주세요. <br><br>
+
+3. Node Num 은 화면에 표시될 노드의 갯수입니다. <br>
+본인이 원하는 갯수를 입력하시면 됩니다.<br>
+하지만 지나치게 큰 수를 입력하게 된다면 결과값이 왜곡될 수 있으니 주의해주세요. <br><br>
+
+4. Page Range 는 웹에서 데이터를 크롤링할 페이지의 갯수를 의미합니다. <br>
+기본값은 3이며, 1~3 페이지의 데이터를 크롤링 한다는 것을 의미합니다.<br>
+(1 증가당 약 3초 증가) <br><br>
+
+5. Stop Words (불용어) 는 결과값에서 제외할 단어를 의미합니다. <br>
+결과값에서 제외할 단어가 복수일 경우 <font color="red">,(콤마)</font>로 구분해주시길 바랍니다.
+</h6></div>
+</div>
+
+<div class="back" align="center">
+<a href="{% url 'home' %}"><img src="{% static 'common/web_images/back.png' %}"></a></div>
+
+{% endblock %}

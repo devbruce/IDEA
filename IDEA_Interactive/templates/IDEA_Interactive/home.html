@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+<div class="menus" align="center">
+
+<div class="generator-auto" style="float:left; width:50%;">
+<div style="margin-left:60;">
+<img src="{% static 'common/web_images/generator_auto.png' %}">
+<a href="{% url 'i_sna_auto' %}" class="menu" style="margin:10px;"><img src="{% static 'IDEA_Interactive/web_images/sna_auto.png' %}"></a>
+<a href="{% url 'i_wc_auto' %}" class="menu" style="margin:10px;"><img src="{% static 'IDEA_Interactive/web_images/wc_auto.png' %}"></a></div></div>
+
+<div class="generator-manual" style="float:left; width:50%;">
+<div style="margin-right:60;">
+<img src="{% static 'common/web_images/generator_manual.png' %}">
+<a href="{% url 'i_sna' %}" class="menu" style="margin:10px;"><img src="{% static 'IDEA_Interactive/web_images/sna.png' %}"></a>
+<a href="{% url 'i_wc' %}" class="menu" style="margin:10px;"><img src="{% static 'IDEA_Interactive/web_images/wc.png' %}"></a></div></div>
+
+</div>
+
+{% endblock %}

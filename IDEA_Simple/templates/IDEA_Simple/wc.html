@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="subtitle" align="left" style="margin:30px;">
+<img src="{% static 'IDEA_Simple/web_images/wc_title.png' %}"></div>
+
+<form method="POST" class="post-form">{% csrf_token %}
+Max Word Size : {{ form.max_word_size }} <font size="1" color="green">[Range : 50 ~ 300]</font> <br><br>
+Bg Color : {{ form.bg_color }} <br><br>
+Shape : {{ form.shape }} <br><br>
+Stop Words : {{ form.stop_words }} <font size="1" color="green">default = null</font> <br><br>
+<b>Text Input</b> <br>
+{{ form.text_input|attr:"rows:20"|attr:"cols:150" }}<br>
+<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button>
+</form>
+
+<div class="guide" align="left">
+<h3>사용방법</h3>
+<h6>1. Max word size 는 워드클라우드에서 가장 큰(빈도수가 가장높은) 단어의 크기입니다. <br>
+사용자가 원하는 크기를 입력하시면 됩니다. <br><br>
+
+2. Bg color 는 워드클라우드 배경의 색상을 설정하는 값입니다. <br>
+사용자가 희망하는 색상을 선택하시면 됩니다.<br><br>
+
+3. Shape 는 워드클라우드의 모양을 의미합니다. <br>
+사용자가 희망하는 모양을 선택하시면 됩니다. <br><br>
+
+4. Stop Words (불용어) 는 결과값에서 제외할 단어를 의미합니다. <br>
+결과값에서 제외할 단어가 복수일 경우 <font color="red">,(콤마)</font>로 구분해주시길 바랍니다.
+</h6></div>
+
+<div class="back" align="center">
+<a href="{% url 'home' %}"><img src="{% static 'common/web_images/back.png' %}"></a></div>
+
+{% endblock %}
