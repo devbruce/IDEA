@@ -1,7 +1,7 @@
 # IDEA (OneClick Data Visualization)<br>
-![python-version](https://img.shields.io/badge/python-v3.6.4-red.svg)
-![django-version](https://img.shields.io/badge/django-v2.0.3-red.svg)
-![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)
+![python-version](https://img.shields.io/badge/python-v3.6.4-blue.svg)
+![django-version](https://img.shields.io/badge/django-v2.0.3-blue.svg)
+![GitHub (pre-)release](https://img.shields.io/github/release/DevBruce/IDEA/all.svg)
 ![GitHub](https://img.shields.io/github/license/DevBruce/IDEA.svg)
 
 <br><br>
@@ -70,7 +70,7 @@ But, if you use IDEA, you can <b>visualize data easily.</b>
 <br><br>
 
 ## History
-[![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases) <br>
+[![GitHub (pre-)release](https://img.shields.io/github/release/DevBruce/IDEA/all.svg)](https://github.com/DevBruce/IDEA/releases) <br>
 
 - v1.0 : First Commit
 

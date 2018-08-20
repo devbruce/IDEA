@@ -31,7 +31,7 @@ $.get("{% static 'IDEA_Interactive/result_data/sna_gexf.gexf' %}", function (xml
         node.value = node.symbolSize;
         node.label = {
             normal: {
-                show: node.symbolSize > 15
+                show: node.symbolSize > 10
             }
         };
         node.category = node.attributes.modularity_class;
