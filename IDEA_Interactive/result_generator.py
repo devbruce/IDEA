@@ -63,24 +63,26 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
     ##-- Make Raw Graph --##
     G = nx.from_pandas_adjacency(cooccur_matrix)
 
-    ##-- Edge_remove_threshold --##
-    edge_low = []
-    node_candidate_remove = []
+    ##-- Edge_remove_threshold & Make Isolated Nodes List--##
+    edge_low=list()
+    isolated_nodes_candidates=list()
     for u,v in G.edges:
-        if G[u][v]["weight"] <= edge_remove_threshold:
+        if G[u][v]["weight"] <= edge_remove_threshold: 
             edge_low.append((u,v))
-            node_candidate_remove.append(u)
-            node_candidate_remove.append(v)
-    
+            if u not in isolated_nodes_candidates:
+                isolated_nodes_candidates.append(u)
+            if v not in isolated_nodes_candidates:
+                isolated_nodes_candidates.append(v)
     G.remove_edges_from(edge_low) # Remove Edge If(edge weight <= edge_remove_threshold)
 
-    edge_low = []
-    for u,v in G.edges:
-        if G[u][v]["weight"] <= 1:
-            edge_low.append((u,v))
-    G.remove_nodes_from(edge_low)
-
-    ##----------------------------## 
+    isolated_nodes=list()
+    for node in isolated_nodes_candidates:
+        edge_weight_sum=0
+        for to in G[node]:
+            edge_weight_sum += G[node][to]['weight']
+        if edge_weight_sum < 1:
+            isolated_nodes.append(node)
+        else: continue
 
     ##- make tf_sum_dict (Total of Term Frequency Dictionary) -##
     tf_sum = td_matrix.toarray().sum(axis=0)
@@ -89,8 +91,12 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
     for i in range(len(term_names)):
         tf_sum_dict[term_names[i]] = tf_sum[i]
 
+    # Remove Isolated Nodes (Set Node Weight 0)
+    for node in isolated_nodes:
+        tf_sum_dict[node] = 0
+
     ##- Get Top Frequency Nodes to make sub_G -##
-    tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key = lambda x: x[1], reverse=True)
+    tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
     sub_nodes = []
 
     for node in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
