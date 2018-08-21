@@ -1,64 +1,71 @@
-{% extends 'index.html' %}
+{% extends 'generator.html' %}
 {% load staticfiles %}
 {% load widget_tweaks %}
 
 {% block content %}
 
-<div class="subtitle" align="center" style="margin:30px;">
-<img src="{% static 'IDEA_Simple/web_images/sna_title.png' %}"></div>
-
-<div class="guide" align="center" style="margin:25px;">
-<font color="gray" font size="4">구글의 검색결과를 <b>자동(Auto)</b>으로 크롤링하여 생성</font></div>
-
-<div class="input" style="float:left; width:50%;">
-<div style="margin-left:270px; margin-top:30px;">
+<div class="top" align="center" style="width:100%; height:30%;">
+<div class="subtitle" style="margin:10px;"><img src="{% static 'IDEA_Simple/web_images/sna_title.png' %}"></div>
+<div align="center" style="margin-bottom:30px;"><font color="gray" font size="4">구글의 검색결과를 <b>자동(Auto)</b>으로 크롤링하여 생성</font></div>
 <form method="POST" class="post-form">{% csrf_token %}
-Edge Remove Threshold : {{ form.edge_remove_threshold }} <font size="1" color="green">[Range : 0 ~ 6]</font> <br><br>
-Node Num : {{ form.node_num }} <font size="1" color="green">[Range : 5 ~ 100]</font> <br><br>
-Page Range : {{ form.page_range }} <font size="1" color="green">[Range : 1 ~ 100]</font> <br><br>
-Stop Words : {{ form.stop_words }} <font size="1" color="green">default = null</font> <br><br>
-Remove Isolated Node : {{ form.remove_isolated_node }}  
-Layout : {{ form.layout }}
-<b>Fruchterman Reingold Layout</b> <br>
-K : {{ form.fr_k }} <br><br>
-Iteration : {{ form.fr_iter }}
+<b>Keyword</b> : {{ form.keyword }}<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button>
+</div>
 
-<br><br>
+<div class="mid" style="width:100%; height:30%;">
 
-<b>ForceAtlas2</b> <br><br>
-Squared Factor : {{ form.fa2_1 }} <br><br>
-Log Basis : {{ form.fa2_2 }} <br><br>
-Iteration : {{ form.fa2_iter }} <br><br>
-<b>Keyword</b> : {{ form.keyword }}
-<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button>
-</form></div>
+<div class="setttings" style="float:left; width:50%;">
+<div style="margin-left:35%;">
+<b>Page Range</b> : {{ form.page_range }} <font size="1" color="green"><b>Default:2, Range:[0,100]</b></font><br><br>
+<b>Network Size</b> : {{ form.node_num }} <font size="1" color="green"><b>Default:Small</b></font> <br><br>
+<b>Edge Remove Threshold</b> : {{ form.edge_remove_threshold }} <font size="1" color="green"><b>Default:2, Range:[1,100]</b></font> <br><br>
+<b>Remove Isolated Node</b> : {{ form.remove_isolated_node }} <font size="1" color="green"><b>Default:ON</font></b><br><br>
+<b>Stop Words</b> : {{ form.stop_words }} <font size="1" color="green"><b>Default:Null</b></font> <br><br></div>
 </div>
 
 <div class="guide" style="float:left; width:50%;">
-<div style="margin-left:110px">
-<h3>사용방법</h3>
-<h6>1. 자동생성모드에 해당하므로 생성시간이 최소 10초 소모됩니다. <br><br>
-
-2. Edge Remove Threshold 는 default 값이 0입니다. <br>
-이 경우 각 단어사이의 edge가 제거없이 모두 표시됩니다. <br>
-하지만 글의 수가 많아질 경우 edge 의 수를 줄여주어야 관계를 파악하는데 수월합니다. <br>
-포스트의 갯수가 100개 미만일 경우 0, 100개이상 2, 1000개이상 4 정도가 적당합니다. <br>
-지나치게 큰 값은 오류를 일으키므로 적절하게 조절해주세요. <br><br>
-
-3. Node Num 은 화면에 표시될 노드의 갯수입니다. <br>
-본인이 원하는 갯수를 입력하시면 됩니다.<br>
-하지만 지나치게 큰 수를 입력하게 된다면 결과값이 왜곡될 수 있으니 주의해주세요. <br><br>
-
-4. Page Range 는 웹에서 데이터를 크롤링할 페이지의 갯수를 의미합니다. <br>
-기본값은 3이며, 1~3 페이지의 데이터를 크롤링 한다는 것을 의미합니다.<br>
-(1 증가당 약 3초 증가) <br><br>
-
-5. Stop Words (불용어) 는 결과값에서 제외할 단어를 의미합니다. <br>
-결과값에서 제외할 단어가 복수일 경우 <font color="red">,(콤마)</font>로 구분해주시길 바랍니다.
-</h6></div>
+<div style="margin-left:20%;">
+<div style="margin-left:5%;"><font size="1"><b>How To Use</b></div>
+<ul>
+<li><b>Auto Generator Mode</b> 이므로 생성시간이 최소 10초 소요됩니다.</li><br>
+<li><b>Page Range</b> : Data를 Crawling 할 페이지의 갯수입니다. 페이지당 약 3초 소요됩니다.</li><br>
+<li><b>Network Size</b> : Network를 구성할 노드의 갯수 크기입니다.<br>
+<font color="blue">Small : 35, Regular : 60, Large : 100</font></li><br>
+<li><b>Edge Remove Threshold</b> : Edge Weight 가 n 보다 작은 edge를 제거합니다.<br>
+지나치게 큰 값을 입력할 경우 에러가 발생할 수 있습니다.</li><br>
+<li><b>Remove Isolated Node</b> : Edge가 없이 고립된 Node를 제거유무를 선택합니다.</li><br>
+<li><b>Stop Words</b> : 불용어 처리기능 입니다. 결과값에서 제외하고 싶은 단어를 입력하세요.<br>
+여러개일 경우 <font color="red">,(콤마)</font>를 이용하여 작성해주세요.<br>
+ex) 데이터,머신러닝,개발</li>
+</ul></font></div>
+</div>
 </div>
 
-<div class="back" align="center">
-<a href="{% url 'home' %}"><img src="{% static 'common/web_images/back.png' %}"></a></div>
+<hr>
+<div class="mid2" align="center" style-="width:100%; height:10%;">
+<font size="3"><b>Layout</b></font> : {{ form.layout }}
+</div>
+<hr>
+
+<div class="bot" style="width:100%; height:20%;">
+<div class="layout_setting" style="float:left; width:50%">
+<div align="center"><h2>Fruchterman Reingold Layout Settings</h2></div>
+<div style="margin-left:35%; margin-top:30px;">
+<b>k</b> : {{ form.fr_k }} <font size="1" color="green"><b>Default:1</b></font><br><br>
+<b>Iteration</b> : {{ form.fr_iter }} <font size="1" color="green"><b>Default:50</b></font></div>
+</div>
+<div class="layout_setting" style="float:left; width:50%">
+<div align="center"><h2>ForceAtlas2 Layout Settings</h2></div>
+<div style="margin-left:35%; margin-top:30px;">
+<b>Exponentiation</b> : {{ form.fa2_1 }} <font size="1" color="green"><b>Default:2</b></font><br><br>
+<b>Log Base</b> : {{ form.fa2_2 }} <font size="1" color="green"><b>Default:100</b></font><br><br>
+<b>Iteration</b> : {{ form.fa2_iter }} <font size="1" color="green"><b>Default:50</b></font></div>
+</form></div>
+</div>
+
+
+<div class="back_menus" align="center" style="width:100%; height:10%;">
+<a style="margin:5px;" href="{% url 'index' %}"><img src="{% static 'common/web_images/main.png' %}"></a>
+<a style="margin:5px;" href="{% url 'home' %}"><img src="{% static 'common/web_images/back.png' %}"></a>
+</div>
 
 {% endblock %}

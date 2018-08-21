@@ -10,8 +10,13 @@ class ModelAutoSNA(models.Model):
         ("FR", "Fruchterman Reingold"),
         ("FA2", "ForceAtlas2"),
     )
+    network_size = (
+        (35, "Small"),
+        (60, "Regular"),
+        (100, "Large"),
+    )
     edge_remove_threshold = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=2)
-    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=30)
+    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=35, choices=network_size)
     page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=2)
     stop_words = models.CharField(max_length=100, blank=True)
     remove_isolated_node = models.CharField(max_length=5, default="on", choices=on_off)
@@ -24,7 +29,7 @@ class ModelAutoSNA(models.Model):
     keyword = models.CharField(max_length=20)
 
 class ModelAutoWC(models.Model):
-    page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=3)
+    page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=2)
     stop_words = models.CharField(max_length=100, blank=True)
     keyword = models.CharField(max_length=20)
 
@@ -37,10 +42,15 @@ class ModelSNA(models.Model):
         ("FR", "Fruchterman Reingold"),
         ("FA2", "ForceAtlas2"),
     )
+    network_size = (
+        (35, "Small"),
+        (60, "Regular"),
+        (100, "Large"),
+    )
     edge_remove_threshold = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(500)], default=2)
-    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=30)
+    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=35, choices=network_size)
     stop_words = models.CharField(max_length=100, blank=True)
-    remove_isolated_node = models.CharField(max_length=5, default="off", choices=on_off)
+    remove_isolated_node = models.CharField(max_length=5, default="on", choices=on_off)
     layout = models.CharField(max_length=25, default="FR", choices=layouts)
     fr_k = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
     fr_iter = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(500)], default=50)

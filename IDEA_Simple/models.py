@@ -4,14 +4,19 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class ModelAutoSNA(models.Model):
     on_off = (
         ("on", "ON"),
-        ("off", "OFF")
+        ("off", "OFF"),
     )
     layouts = (
         ("FR", "Fruchterman Reingold"),
         ("FA2", "ForceAtlas2"),
     )
+    network_size = (
+        (35, "Small"),
+        (60, "Regular"),
+        (100, "Large"),
+    )
     edge_remove_threshold = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=2)
-    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=30)
+    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=35, choices=network_size)
     page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=2)
     stop_words = models.CharField(max_length=100, blank=True)
     remove_isolated_node = models.CharField(max_length=5, default="on", choices=on_off)
@@ -42,21 +47,26 @@ class ModelAutoWC(models.Model):
     max_word_size = models.IntegerField(validators=[MinValueValidator(50), MaxValueValidator(300)], default=100)
     bg_color = models.CharField(max_length=10, default="white", choices = bg_colors)
     shape = models.CharField(max_length=10, default="default", choices = shapes)
-    page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=3)
+    page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=2)
     stop_words = models.CharField(max_length=30, blank = True)
     keyword = models.CharField(max_length=20)
 
 class ModelSNA(models.Model):
     on_off = (
         ("on", "ON"),
-        ("off", "OFF")
+        ("off", "OFF"),
     )
     layouts = (
         ("FR", "Fruchterman Reingold"),
         ("FA2", "ForceAtlas2"),
     )
+    network_size = (
+        (35, "Small"),
+        (60, "Regular"),
+        (100, "Large"),
+    )
     edge_remove_threshold = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(500)], default=2)
-    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=30)
+    node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=35, choices=network_size)
     stop_words = models.CharField(max_length=100, blank=True)
     remove_isolated_node = models.CharField(max_length=5, default="on", choices=on_off)
     layout = models.CharField(max_length=25, default="FR", choices=layouts)

@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<title>IDEA</title>
+		<link rel="stylesheet" href="{% static 'common/css/IDEA_CSS.css' %}">
+		<script type="text/javascript">
+			function loadingf() {
+				document.getElementById('loading').style.display='block';
+			}
+		</script>
+	</head>
+		<body>
+			<div class="contents">
+
+			{% block content %}
+		
+			{% endblock %}
+
+			</div>
+
+								
+	    <div id="loading" style="display:none"><img id="loading_image" src="{% static 'common/web_images/loading.gif' %}" alt="Loading..."></div>
+		</body>
+</html>
