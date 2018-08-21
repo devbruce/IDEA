@@ -64,19 +64,14 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=30, sw = "", r
     # Make Raw Graph
     G = nx.from_pandas_adjacency(cooccur_matrix)
 
-    # Edge_remove_threshold & Make Isolated Nodes Candidates List
+    # Edge_remove_threshold
     edge_low=list()
-    isolated_nodes_candidates=list()
     for u,v in G.edges:
         if G[u][v]["weight"] <= edge_remove_threshold:
             edge_low.append((u,v))
-            if u not in isolated_nodes_candidates:
-                isolated_nodes_candidates.append(u)
-            if v not in isolated_nodes_candidates:
-                isolated_nodes_candidates.append(v)
     G.remove_edges_from(edge_low) # Remove Edge If(edge weight <= edge_remove_threshold)
 
-    # make tf_sum_dict (Total of Term Frequency Dictionary)
+    # Make tf_sum_dict (Total of Term Frequency Dictionary)
     tf_sum = td_matrix.toarray().sum(axis=0)
     tf_sum_dict = {}
     for i in range(len(term_names)):
@@ -85,36 +80,37 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=30, sw = "", r
     # Get Top Frequency Nodes to make sub_G
     tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
 
-    # Remove Isolated Nodes (Set Node Weight -1)
-    main_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
-    isolated_nodes=list()
-    for node in isolated_nodes_candidates:
-        edge_weight_sum=0
-        for to in G[node]:
-            if to in main_nodes: # If edge is realted to main_nodes, add this edge_weight edge_weight_sum
-                edge_weight_sum += G[node][to]['weight']
-        if edge_weight_sum==0:
-            isolated_nodes.append(node)
-
-    # Make temp_dict for Remove Isolated Nodes
-    temp_dict = OrderedDict()
-    for val in tf_sum_dict_sorted:
-        temp_dict[val[0]] = val[1]
-
-    # Set Isolated nodes' weight -1
+    ##-- Process : Remove Isolated Node --##
     if remove_isolated_node == "on":
+        # Make Remove Isolated Nodes List
+        isolated_nodes=list()
+        main_network_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
+        for node in G.nodes:
+            edge_weight_sum=0
+            for to in G[node]:
+                if to in main_network_nodes: # If edge is realted to main_nodes, add this edge_weight edge_weight_sum
+                    edge_weight_sum += G[node][to]['weight']
+            if edge_weight_sum==0:
+                isolated_nodes.append(node)
+
+        # Make temp_dict for setting isolated node weight -1
+        temp_dict = OrderedDict()
+        for val in tf_sum_dict_sorted:
+            temp_dict[val[0]] = val[1]
+
+        # Set Isolated nodes' weight -1
         for node in isolated_nodes:
             temp_dict[node] = -1
+        tf_sum_dict_sorted = list(temp_dict.items())
     else: pass
-
-    tf_sum_dict_sorted = list(temp_dict.items())
+    ##-------------------------------------##
 
     # Make Sub Graph
     sub_nodes = []
-    for node in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
-        if node[1] == -1: # If Node Weight == -1 (It means that this node is a isolated node)
+    for node_data in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
+        if node_data[1] == -1: # If Node Weight == -1 (It means that this node is a isolated node)
             continue
-        else: sub_nodes.append(node[0])
+        else: sub_nodes.append(node_data[0])
 
     sub_G = G.subgraph(sub_nodes)
 

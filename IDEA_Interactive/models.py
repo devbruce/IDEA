@@ -2,9 +2,9 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class ModelAutoSNA(models.Model):
-    isolated_node_on_off = (
-        ("on", "On"),
-        ("off", "Off")
+    on_off = (
+        ("on", "ON"),
+        ("off", "OFF"),
     )
     layouts = (
         ("FR", "Fruchterman Reingold"),
@@ -14,7 +14,7 @@ class ModelAutoSNA(models.Model):
     node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=30)
     page_range = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=2)
     stop_words = models.CharField(max_length=100, blank=True)
-    remove_isolated_node = models.CharField(max_length=5, default=True, choices=isolated_node_on_off)
+    remove_isolated_node = models.CharField(max_length=5, default="on", choices=on_off)
     layout = models.CharField(max_length=25, default="FR", choices=layouts)
     fr_k = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
     fr_iter = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(500)], default=50)
@@ -29,9 +29,9 @@ class ModelAutoWC(models.Model):
     keyword = models.CharField(max_length=20)
 
 class ModelSNA(models.Model):
-    isolated_node_on_off = (
-        ("on", "On"),
-        ("off", "Off")
+    on_off = (
+        ("on", "ON"),
+        ("off", "OFF"),
     )
     layouts = (
         ("FR", "Fruchterman Reingold"),
@@ -40,7 +40,7 @@ class ModelSNA(models.Model):
     edge_remove_threshold = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(500)], default=2)
     node_num = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(100)], default=30)
     stop_words = models.CharField(max_length=100, blank=True)
-    remove_isolated_node = models.CharField(max_length=5, default=True, choices=isolated_node_on_off)
+    remove_isolated_node = models.CharField(max_length=5, default="off", choices=on_off)
     layout = models.CharField(max_length=25, default="FR", choices=layouts)
     fr_k = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
     fr_iter = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(500)], default=50)
