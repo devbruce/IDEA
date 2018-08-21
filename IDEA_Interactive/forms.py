@@ -5,7 +5,8 @@ class FormAutoSNA(forms.ModelForm):
 
     class Meta:
         model = ModelAutoSNA
-        fields = ('edge_remove_threshold', 'node_num', 'page_range', 'stop_words', 'keyword',)
+        fields = ('edge_remove_threshold', 'node_num', 'page_range', 'stop_words', 
+        'remove_isolated_node', 'layout', 'fr_k', 'fr_iter', 'fa2_1', 'fa2_2', 'fa2_iter', 'keyword',)
 
 class FormAutoWC(forms.ModelForm):
 
@@ -17,7 +18,8 @@ class FormSNA(forms.ModelForm):
 
     class Meta:
         model = ModelSNA
-        fields = ('edge_remove_threshold', 'node_num', 'stop_words', 'text_input',)
+        fields = ('edge_remove_threshold', 'node_num', 'stop_words',
+        'remove_isolated_node', 'layout', 'fr_k', 'fr_iter', 'fa2_1', 'fa2_2', 'fa2_iter', 'text_input',)
 
 class FormWC(forms.ModelForm):
 

@@ -22,6 +22,13 @@ def sna_auto(request):
                 'edge_remove_threshold' : int(request.POST['edge_remove_threshold']),
                 'node_num' : int(request.POST['node_num']),
                 'sw' : request.POST['stop_words'],
+                'remove_isolated_node' : request.POST['remove_isolated_node'], 
+                'layout' : request.POST['layout'], 
+                'fr_k' : int(request.POST['fr_k']),
+                'fr_iter' : int(request.POST['fr_iter']),
+                'fa2_1' : int(request.POST['fa2_1']),
+                'fa2_2' : int(request.POST['fa2_2']),
+                'fa2_iter' : int(request.POST['fa2_iter']),
             }
 
             response = HttpResponse(content_type="image/png")
@@ -68,6 +75,13 @@ def sna(request):
                 'edge_remove_threshold' : int(request.POST['edge_remove_threshold']),
                 'node_num' : int(request.POST['node_num']),
                 'sw' : request.POST['stop_words'],
+                'remove_isolated_node' : request.POST['remove_isolated_node'], 
+                'layout' : request.POST['layout'], 
+                'fr_k' : int(request.POST['fr_k']),
+                'fr_iter' : int(request.POST['fr_iter']),
+                'fa2_1' : int(request.POST['fa2_1']),
+                'fa2_2' : int(request.POST['fa2_2']),
+                'fa2_iter' : int(request.POST['fa2_iter']),
             }
             response = HttpResponse(content_type="image/png")
             make_sna(request.POST['text_input'], **options)

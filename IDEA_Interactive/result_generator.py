@@ -37,11 +37,12 @@ def make_corpus(raw_data):
     corpus = np.array(contents_data["content"])
     return corpus
 
-def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
+def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=30, sw = "", remove_isolated_node="on",
+                layout="FR", fr_k=1, fr_iter=50, fa2_1=2, fa2_2=100, fa2_iter=50):
 
     corpus = make_corpus(contents_raw)
 
-    ##- Stop Words Process -##
+    # Stop Words Process
     if sw != "":
         sw = sw.replace(" ", "")
         sw_list = sw.split(",")
@@ -49,7 +50,7 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
     else:
         sw_list = None
 
-    ##- Make cooccur_matrix -## 
+    # Make cooccur_matrix
     term_vectorizer = CountVectorizer(min_df = 1, token_pattern = r"\w{2,}", stop_words = sw_list) # Count if(Frequency >=1, Length >=2)
     token_dict = term_vectorizer.fit(corpus)
     term_names = token_dict.get_feature_names()
@@ -60,14 +61,14 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
 
     cooccur_matrix = pd.DataFrame(data = tf_cooccur.todense(), index = term_names, columns = term_names)
 
-    ##-- Make Raw Graph --##
+    # Make Raw Graph
     G = nx.from_pandas_adjacency(cooccur_matrix)
 
-    ##-- Edge_remove_threshold & Make Isolated Nodes List--##
+    # Edge_remove_threshold & Make Isolated Nodes Candidates List
     edge_low=list()
     isolated_nodes_candidates=list()
     for u,v in G.edges:
-        if G[u][v]["weight"] <= edge_remove_threshold: 
+        if G[u][v]["weight"] <= edge_remove_threshold:
             edge_low.append((u,v))
             if u not in isolated_nodes_candidates:
                 isolated_nodes_candidates.append(u)
@@ -75,40 +76,55 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
                 isolated_nodes_candidates.append(v)
     G.remove_edges_from(edge_low) # Remove Edge If(edge weight <= edge_remove_threshold)
 
+    # make tf_sum_dict (Total of Term Frequency Dictionary)
+    tf_sum = td_matrix.toarray().sum(axis=0)
+    tf_sum_dict = {}
+    for i in range(len(term_names)):
+        tf_sum_dict[term_names[i]] = tf_sum[i]
+
+    # Get Top Frequency Nodes to make sub_G
+    tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
+
+    # Remove Isolated Nodes (Set Node Weight -1)
+    main_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
     isolated_nodes=list()
     for node in isolated_nodes_candidates:
         edge_weight_sum=0
         for to in G[node]:
-            edge_weight_sum += G[node][to]['weight']
-        if edge_weight_sum < 1:
+            if to in main_nodes: # If edge is realted to main_nodes, add this edge_weight edge_weight_sum
+                edge_weight_sum += G[node][to]['weight']
+        if edge_weight_sum==0:
             isolated_nodes.append(node)
-        else: continue
 
-    ##- make tf_sum_dict (Total of Term Frequency Dictionary) -##
-    tf_sum = td_matrix.toarray().sum(axis=0)
-    tf_sum_dict = {}
+    # Make temp_dict for Remove Isolated Nodes
+    temp_dict = OrderedDict()
+    for val in tf_sum_dict_sorted:
+        temp_dict[val[0]] = val[1]
 
-    for i in range(len(term_names)):
-        tf_sum_dict[term_names[i]] = tf_sum[i]
+    # Set Isolated nodes' weight -1
+    if remove_isolated_node == "on":
+        for node in isolated_nodes:
+            temp_dict[node] = -1
+    else: pass
 
-    # Remove Isolated Nodes (Set Node Weight 0)
-    for node in isolated_nodes:
-        tf_sum_dict[node] = 0
+    tf_sum_dict_sorted = list(temp_dict.items())
 
-    ##- Get Top Frequency Nodes to make sub_G -##
-    tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
+    # Make Sub Graph
     sub_nodes = []
-
     for node in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
-        sub_nodes.append(node[0])
+        if node[1] == -1: # If Node Weight == -1 (It means that this node is a isolated node)
+            continue
+        else: sub_nodes.append(node[0])
 
-    sub_G = G.subgraph(sub_nodes)  # sub_graph
+    sub_G = G.subgraph(sub_nodes)
 
     # Add Node Weight
     scaled_weight_list = []
     for s in tf_sum_dict_sorted[:node_num]:
-        scaled_weight = (s[1] * 2500 / tf_sum_dict_sorted[0][1])**(1/2)
-        scaled_weight_list.append((s[0],scaled_weight))
+        if s[1] == -1: continue # If Node Weight == -1 (It means that this node is a isolated node), then do nothing
+        else:
+            scaled_weight = (s[1] * 2500 / tf_sum_dict_sorted[0][1])**(1/2)
+            scaled_weight_list.append((s[0],scaled_weight))
 
     scaled_weight_dict = dict()
     for sw in scaled_weight_list:
@@ -117,19 +133,28 @@ def make_sna_gexf(contents_raw, edge_remove_threshold=0, node_num=50, sw = ""):
     for node in scaled_weight_dict:
         sub_G.nodes[node]['viz'] = {'size':scaled_weight_dict[node]}
 
+    ##------- Node Position Add -------##
+    
+    # Fruchterman Reingold
+    if layout == "FR":
+        pos = nx.spring_layout(sub_G, k=fr_k, iterations=fr_iter)
+        for node in pos:
+            sub_G.nodes[node]['viz']['position'] = {'x' : pos[node][0], 'y' : pos[node][1]}
+        
+    # ForceAtals2
+    elif layout == "FA2":
+        forceatlas2 = ForceAtlas2()
+        pos = forceatlas2.forceatlas2_networkx_layout(sub_G, iterations=fa2_iter)
 
-    # Node Position Add
-    forceatlas2 = ForceAtlas2()
-    pos = forceatlas2.forceatlas2_networkx_layout(sub_G, iterations=90)
-
-    for node in pos:
-        raw_x, raw_y = pos[node]
-        ##-- Scaling Pos --##
-        adj_x, adj_y = [math.log(abs(coord) ** 2.5, 300) for coord in pos[node]]
-        if raw_x < 0: adj_x *= -1
-        if raw_y < 0: adj_y *= -1
-        ##-----------------##
-        sub_G.nodes[node]['viz']['position'] = {'x' : adj_x, 'y' : adj_y}
+        for node in pos:
+            raw_x, raw_y = pos[node]
+            ##-- Scaling Pos --##
+            adj_x, adj_y = [math.log(abs(coord) ** fa2_1, fa2_2) for coord in pos[node]]
+            if raw_x < 0: adj_x *= -1
+            if raw_y < 0: adj_y *= -1
+            ##-----------------##
+            sub_G.nodes[node]['viz']['position'] = {'x' : adj_x, 'y' : adj_y}
+    ##----------------------------------##
 
     # Add Node Modularity Class
     partition = community.best_partition(sub_G)

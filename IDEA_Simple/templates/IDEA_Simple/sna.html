@@ -11,10 +11,26 @@
 <form method="POST" class="post-form">{% csrf_token %}
 Edge Remove Threshold : {{ form.edge_remove_threshold }} <font size="1" color="green">[Range : 0 ~ 50]</font> <br><br>
 Node Num : {{ form.node_num }} <font size="1" color="green">[Range : 5 ~ 100]</font> <br><br>
-Stop Words : {{ form.stop_words }} <font size="1" color="green">default = null</font> <br><br><br>
+Stop Words : {{ form.stop_words }} <font size="1" color="green">default = null</font> <br>
+Remove Isolated Node : {{ form.remove_isolated_node }}
+Layout : {{ form.layout }}
+<b>Fruchterman Reingold Layout</b> <br>
+K : {{ form.fr_k }} <br>
+Iteration : {{ form.fr_iter }}
+
+<br><br>
+
+<b>ForceAtlas2</b> <br>
+Squared Factor : {{ form.fa2_1 }} <br>
+Log Basis : {{ form.fa2_2 }} <br>
+Iteration : {{ form.fa2_iter }} <br>
 <b>Text Input</b><br>
 {{ form.text_input|attr:"rows:15"|attr:"cols:1000"}}<br>
-<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button>
+<button type="submit" class="save btn btn-default" onClick="loadingf();">Submit</button> <br><br>
+
+<font size="1" color="gray">If Text_InputBox doesn't appear, click the submit button first. <br>
+Then, Text_InputBox will appear.</font>
+
 </form>
 </div>
 

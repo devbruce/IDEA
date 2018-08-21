@@ -38,7 +38,9 @@ def make_corpus(raw_data):
     return corpus
 
 
-def make_sna(contents_raw, edge_remove_threshold = 0, node_num = 50, sw = ""):
+def make_sna(contents_raw, edge_remove_threshold=0, node_num=30, sw = "", remove_isolated_node="on",
+                layout="FR", fr_k=1, fr_iter=50, fa2_1=2, fa2_2=100, fa2_iter=50):
+    
     corpus = make_corpus(contents_raw)
     
     ##- Stop Words Process -##
@@ -63,46 +65,59 @@ def make_sna(contents_raw, edge_remove_threshold = 0, node_num = 50, sw = ""):
     ##-- Make Raw Graph --##
     G = nx.from_pandas_adjacency(cooccur_matrix)
 
-    ##-- Edge_remove_threshold & Make Isolated Nodes List--##
+    # Edge_remove_threshold & Make Isolated Nodes Candidates List
     edge_low=list()
     isolated_nodes_candidates=list()
     for u,v in G.edges:
-        if G[u][v]["weight"] <= edge_remove_threshold: 
+        if G[u][v]["weight"] <= edge_remove_threshold:
             edge_low.append((u,v))
             if u not in isolated_nodes_candidates:
                 isolated_nodes_candidates.append(u)
             if v not in isolated_nodes_candidates:
                 isolated_nodes_candidates.append(v)
     G.remove_edges_from(edge_low) # Remove Edge If(edge weight <= edge_remove_threshold)
-
-    isolated_nodes=list()
-    for node in isolated_nodes_candidates:
-        edge_weight_sum=0
-        for to in G[node]:
-            edge_weight_sum += G[node][to]['weight']
-        if edge_weight_sum < 1:
-            isolated_nodes.append(node)
-        else: continue
     
     ##- make tf_sum_dict (Total of Term Frequency Dictionary) -##
     tf_sum = td_matrix.toarray().sum(axis=0)
     tf_sum_dict = {}
-
     for i in range(len(term_names)):
         tf_sum_dict[term_names[i]] = tf_sum[i]
 
-    # Remove Isolated Nodes (Set Node Weight 0)
-    for node in isolated_nodes:
-        tf_sum_dict[node] = 0
-
     ##- Get Top Frequency Nodes to make sub_G -##
-    tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key = lambda x: x[1], reverse=True)
-    sub_nodes = []
+    tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
 
+    # Remove Isolated Nodes (Set Node Weight -1)
+    main_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
+    isolated_nodes=list()
+    for node in isolated_nodes_candidates:
+        edge_weight_sum=0
+        for to in G[node]:
+            if to in main_nodes: # If edge is realted to main_nodes, add this edge_weight edge_weight_sum
+                edge_weight_sum += G[node][to]['weight']
+        if edge_weight_sum==0:
+            isolated_nodes.append(node)
+
+    # Make temp_dict for Remove Isolated Nodes
+    temp_dict = OrderedDict()
+    for val in tf_sum_dict_sorted:
+        temp_dict[val[0]] = val[1]
+
+    # Set Isolated nodes' weight -1
+    if remove_isolated_node == "on":
+        for node in isolated_nodes:
+            temp_dict[node] = -1
+    else: pass
+
+    tf_sum_dict_sorted = list(temp_dict.items())
+
+    # Make Sub Graph
+    sub_nodes = []
     for node in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
-        sub_nodes.append(node[0])
-            
-    sub_G = G.subgraph(sub_nodes)  # sub_graph
+        if node[1] == -1: # If Node Weight == -1 (It means that this node is a isolated node)
+            continue
+        else: sub_nodes.append(node[0])
+
+    sub_G = G.subgraph(sub_nodes)
 
     edge_weight_max = max([sub_G[u][v]['weight'] for u,v in sub_G.edges])
 
@@ -119,17 +134,28 @@ def make_sna(contents_raw, edge_remove_threshold = 0, node_num = 50, sw = ""):
     edge_weights = [sub_G[u][v]["weight"] * 20 / edge_weight_max for u,v in sub_G.edges]
     edge_colors = [color_map[partition[v]] for u,v in sub_G.edges]
 
-    forceatlas2 = ForceAtlas2()
-    pos = forceatlas2.forceatlas2_networkx_layout(sub_G, iterations=90)
+    ##------- Node Position Add -------##
+    
+    # Fruchterman Reingold
+    if layout == "FR":
+        pos = nx.spring_layout(sub_G, k=fr_k, iterations=fr_iter)
+        
+    # ForceAtals2
+    elif layout == "FA2":
+        forceatlas2 = ForceAtlas2()
+        pos = forceatlas2.forceatlas2_networkx_layout(sub_G, iterations=fa2_iter)
 
-    ##-- Scaling Pos --##
-    for node in pos:
-        raw_x, raw_y = pos[node]
-        adj_x, adj_y = [math.log(coord ** 2, 100) for coord in pos[node]]
-        if raw_x < 0: adj_x *= -1
-        if raw_y < 0: adj_y *= -1
-        pos[node] = adj_x, adj_y
-
+        for node in pos:
+            raw_x, raw_y = pos[node]
+            ##-- Scaling Pos --##
+            adj_x, adj_y = [math.log(abs(coord) ** fa2_1, fa2_2) for coord in pos[node]]
+            if raw_x < 0: adj_x *= -1
+            if raw_y < 0: adj_y *= -1
+            ##-----------------##
+            pos[node][0] = adj_x
+            pos[node][1] = adj_y
+    ##----------------------------------##
+    
     ##-- Make Option Dict --##
     options = {
         "pos" : pos,
