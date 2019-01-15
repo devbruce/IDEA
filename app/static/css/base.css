@@ -1,0 +1,34 @@
+.body-full {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.block-content {
+    height: 76px;
+}
+
+.prevent-overlap {
+    height: 74px;
+}
+
+.jumbotron {
+    text-shadow: black 0.1em 0.1em 0.1em;
+}
+
+.set-inline {
+    display: inline;
+}
+
+.data-box {
+    white-space: nowrap;
+}
+
+.border-radius-0 {
+    border-radius: 0;
+}
+
+.help_text {
+    font-size: 13px;
+}

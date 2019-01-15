@@ -1,0 +1,4 @@
+boto3<1.10
+django-storages<1.8
+psycopg2-binary<2.8
+uwsgi<2.1

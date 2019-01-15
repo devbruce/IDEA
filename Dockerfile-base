@@ -1,0 +1,37 @@
+FROM python:3.6.7-slim-stretch
+
+RUN apt-get -y update && apt-get -y dist-upgrade
+RUN apt-get install -y wget gcc g++ make nginx supervisor
+
+# Install mecab-ko
+WORKDIR /tmp
+RUN wget "https://bitbucket.org/eunjeon/mecab-ko/downloads/mecab-0.996-ko-0.9.2.tar.gz"
+RUN tar -zxvf mecab-0.996-ko-0.9.2.tar.gz
+WORKDIR /tmp/mecab-0.996-ko-0.9.2
+RUN ./configure && make && make check && make install
+
+# Install mecab-ko-dic
+RUN apt-get install -y libmecab-dev
+WORKDIR /tmp
+RUN wget "https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/mecab-ko-dic-2.1.1-20180720.tar.gz"
+RUN tar -zxvf mecab-ko-dic-2.1.1-20180720.tar.gz
+WORKDIR /tmp/mecab-ko-dic-2.1.1-20180720
+RUN ./configure && make && make install
+
+# Remove mecab-ko-* files (no longer needed)
+WORKDIR /tmp
+RUN rm -rf mecab-*
+
+# Install Python Requirements
+COPY requirements.txt /tmp/requirements.txt
+COPY requirements-deploy.txt /tmp/requirements-deploy.txt
+RUN pip3 install -r /tmp/requirements.txt -r /tmp/requirements-deploy.txt
+RUN rm -rf /tmp/requirements.txt /tmp/requirements-deploy.txt
+
+# Set matplotlib
+COPY extension/fonts/DOSGothic.ttf /usr/share/fonts/truetype
+COPY .config/matplotlibrc /root/.config/matplotlib
+
+# Remove packages no longer needed
+RUN apt-get -y remove wget gcc g++ make
+RUN apt-get -y autoremove

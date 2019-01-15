@@ -1,0 +1,107 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Import jQuery & Popper.js -->
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.js' %}"></script>
+    <!-- Bootstrap CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Import base.css -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <title>IDEA</title>
+</head>
+<body class="bg-light body-full">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-brand">IDEA</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#idea-header" aria-controls="idea-header" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="idea-header">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="https://github.com/DevBruce/IDEA" target="_blank">About </a>
+        </div>
+    </div>
+</nav>
+
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid bg-info text-light mb-0">
+    <div class="container">
+        <h1 class="text-center">IDEA</h1>
+        <h2 class="text-center">Text Data Visualizer</h2>
+        <p class="text-center">You can visualize data easily.<br>
+            Select the mode below and Start visualize your data!</p>
+    </div>
+</div>
+<div class="alert alert-info text-center mb-0" role="alert">
+    IDEA may not recognize certain languages ​​other than <b>Korean</b>.
+</div>
+<div class="alert alert-warning alert-dismissible fade show text-center mt-0 mb-0" role="alert">
+  The larger the input data, the longer the loading time. If an server error occurs, please try again later.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="container-fluid bg-light text-center">
+    <div class="row">
+
+        <div class="col-sm-6">
+            <button class="btn btn-lg btn-primary dropdown-toggle mt-3 mb-3" type="button" data-toggle="collapse" data-target="#mode-default" aria-expanded="false" aria-controls="mode-default">Data Input Mode : Default</button>
+            <div class="collapse" id="mode-default">
+                <div class="card card-body bg-light mb-3">
+                    <a class="btn btn-lg btn-outline-dark mb-3" href="{% url 'viz:sna_interactive' %}"><h5 class="set-inline">Semantic Network Analysis</h5> <span class="badge badge-pill badge-danger">Interactive</span></a>
+                    <a class="btn btn-lg btn-outline-dark mb-3" href="{% url 'viz:sna' %}"><h5 class="set-inline">Semantic Network Analysis</h5> <span class="badge badge-pill badge-warning">Simple Image</span></a>
+                    <a class="btn btn-lg btn-outline-dark" href="{% url 'viz:wc' %}"><h5 class="set-inline">Word Cloud</h5> <span class="badge badge-pill badge-warning">Simple Image</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <button class="btn btn-lg btn-primary dropdown-toggle mt-3 mb-3" type="button" data-toggle="collapse" data-target="#mode-file" aria-expanded="false" aria-controls="mode-file">Data Input Mode : File</button>
+            <div class="collapse" id="mode-file">
+                <div class="card card-body bg-light mb-3">
+                    <a class="btn btn-lg btn-outline-dark mb-3" href="{% url 'viz:sna_interactive_file' %}"><h5 class="set-inline">Semantic Network Analysis</h5> <span class="badge badge-pill badge-danger">Interactive</span></a>
+                    <a class="btn btn-lg btn-outline-dark mb-3" href="{% url 'viz:sna_file' %}"><h5 class="set-inline">Semantic Network Analysis</h5> <span class="badge badge-pill badge-warning">Simple Image</span></a>
+                    <a class="btn btn-lg btn-outline-dark" href="{% url 'viz:wc_file' %}"><h5 class="set-inline">Word Cloud</h5> <span class="badge badge-pill badge-warning">Simple Image</span></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="block-content"></div>
+<div class="prevent-overlap"></div>
+
+{% endblock %}
+
+
+<div class="{% if footer_sticky %}sticky-bottom{% else %}fixed-bottom{% endif %}">
+    <div class="container-fluid bg-dark">
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4 text-center">
+                <a href="mailto:Bruce93k@gmail.com"><span class="badge badge-light m-2">Email</span></a>
+                <a href="https://github.com/DevBruce" target="_blank"><span class="badge badge-light m-2">GitHub</span></a>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-12">
+                <p class="text-center"><span class="text-white-50">Copyright © 2018 by</span> <span class="text-white"> DevBruce</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if not value_error %}
+
+<div id="container" style="height: 100%; margin: 0;"></div>
+<a href="{% if mode_file %}{% url 'viz:sna_interactive_file' %}{% else %}{% url 'viz:sna_interactive' %}{% endif %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
+<script type="text/javascript" src="{% static 'js/echarts/echarts.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/echarts/dataTool.min.js' %}"></script>
+<script type="text/javascript">
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom, "{{ theme }}");
+        var app = {};
+        option = null;
+        myChart.showLoading();
+        $.ajax({
+            type: "GET",
+            url: "{% url 'viz:get_gexf' %}",
+            dataType: "xml",
+            success: function (xml) {
+                myChart.hideLoading();
+
+                var graph = echarts.dataTool.gexf.parse(xml);
+                var categories = [];
+                for (var i = 0; i < 9; i++) {
+                    categories[i] = {
+                        name: 'Group' + i
+                    };
+                }
+                graph.nodes.forEach(function (node) {
+                    node.itemStyle = null;
+                    node.value = node.symbolSize;
+                    node.label = {
+                        normal: {
+                            show: node.symbolSize > 5
+                        }
+                    };
+                    node.category = node.attributes.modularity_class;
+                });
+                option = {
+                    title: {
+                        text: 'IDEA With ECharts - Les Miserables',
+                        subtext: 'Default layout',
+                        top: 'bottom',
+                        left: 'right'
+                    },
+                    tooltip: {},
+                    legend: [{
+                        // selectedMode: 'single',
+                        data: categories.map(function (a) {
+                            return a.name;
+                        })
+                    }],
+                    animationDuration: 1500,
+                    animationEasingUpdate: 'quinticInOut',
+                    series : [
+                    {
+                        name: 'Les Miserables',
+                        type: 'graph',
+                        layout: 'none',
+                        data: graph.nodes,
+                        links: graph.links,
+                        categories: categories,
+                        roam: true,
+                        focusNodeAdjacency: true,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '#fff',
+                                borderWidth: 1,
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.3)'
+                            }
+                        },
+                        label: {
+                            position: 'right',
+                            formatter: '{b}'
+                        },
+                        lineStyle: {
+                            color: 'source',
+                            curveness: 0.3
+                        },
+                        emphasis: {
+                            lineStyle: {
+                                width: 10
+                            }
+                        }
+                    }
+                    ]
+                };
+
+                myChart.setOption(option);
+            }});
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        </script>
+
+{% else %}
+
+<div class="container-fluid">
+        <div class="alert alert-danger mt-3 mb-3" role="alert">
+                <h3 class="alert-heading">Data Error</h3>
+                <p>If you see this page, it will be in one of the following cases.</p>
+                <hr>
+                {% if mode_file %}
+                <p class="mb-1">- Uploaded Data is not *.txt or *.csv</p>
+                {% endif %}
+                <p class="mb-1">- The amount of data entered is so small that it can not be analyzed.</p>
+                <p class="mb-1">- The value of Edge Remove Threshold is too high. Edge Remove Threshold should be a reasonable value for the amount of data.</p>
+        </div>
+        <a href="{% if mode_file %}{% url 'viz:sna_file' %}{% else %}{% url 'viz:sna' %}{% endif %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
+</div>
+
+<div class="block-content"></div>
+<div class="prevent-overlap"></div>
+
+{% endif %}
+
+{% endblock %}

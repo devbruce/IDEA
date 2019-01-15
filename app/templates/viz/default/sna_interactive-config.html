@@ -1,0 +1,94 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<h2 class="text-center m-3"><b>Semantic Network Analysis</b> <span class="badge badge-pill badge-danger">Interactive</span></h2>
+<form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    <div class="container-fluid">
+
+        {% render_field form.data class="form-control data-box" placeholder="Put your data here. If you try to visualize with blank, sample data is automatically entered." %}
+        <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <b>Network Size</b> {% render_field form.node_num class="form-control" %}
+                <span class="form-text text-muted help_text mb-3">{{ form.node_num.help_text }}</span>
+            </div>
+            <div class="col-sm-6">
+                <b>{{ form.theme.label }}</b> {% render_field form.theme class="form-control mb-3" %}
+            </div>
+        </div>
+
+        <button class="btn btn-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#detail-config" aria-expanded="false" aria-controls="detail-config">Detail Configuration</button>
+        <div class="collapse" id="detail-config">
+            <div class="card card-body mt-1">
+
+                <div class="container-fluid">
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <b>Edge Remove Threshold</b> {% render_field form.edge_remove_threshold class="form-control mb-3" %}
+                        </div>
+                        <div class="col-sm-6">
+                            <br>
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-secondary btn-block active text-light">
+                                    {% render_field form.remove_isolated_node autocomplete="off" %}Remove Isolated Node
+                                </label>
+                                <span class="form-text text-muted help_text mb-3">{{ form.remove_isolated_node.help_text }}</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <b>{{ form.stopwords.label }}</b> {% render_field form.stopwords class="form-control" %}
+                    <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+
+                    <b>{{ form.iterations.label }}</b> {% render_field form.iterations class="form-control mb-3" %}
+                    <b>{{ form.layout.label }}</b> {% render_field form.layout class="form-control mb-3" %}
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <button class="btn btn-outline-info btn-block dropdown-toggle mb-3" type="button" data-toggle="collapse" data-target="#fr-config" aria-expanded="false" aria-controls="fr-config">Layout: Fruchterman Reingold Config</button>
+                            <div class="collapse" id="fr-config">
+                                <div class="card card-body mb-3">
+                                    <div class="container-fluid">
+                                        <b>k Variable</b> {% render_field form.fr_k class="form-control" %}
+                                        <span class="form-text text-muted help_text mb-3">{{ form.fr_k.help_text }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <button class="btn btn-outline-info btn-block dropdown-toggle mb-3" type="button" data-toggle="collapse" data-target="#fa2-config" aria-expanded="false" aria-controls="fa2-config">Layout: ForceAtlas2 Config</button>
+                            <div class="collapse" id="fa2-config">
+                                <div class="card card-body mb-3">
+                                    <div class="container-fluid">
+                                        <b>Square Variable</b> {% render_field form.fa2_square class="form-control mb-3" %}
+                                        <b>log(base) Variable</b> {% render_field form.fa2_log_base class="form-control" %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-block btn-primary mt-2 mb-2">Visualization</button>
+
+    </div>
+</form>
+
+<div class="block-content"></div>
+<div class="prevent-overlap"></div>
+
+{% endblock %}
