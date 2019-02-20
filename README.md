@@ -101,7 +101,7 @@ Then click Visualization button!
 
 [![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)  
 
-- v1.0 : First Release (URL: <http://devbruce-idea.xyz>)
+- v1.0 : First Release (Deployment Suspended)
 
 <br><br>
 
