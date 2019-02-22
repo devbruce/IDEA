@@ -105,10 +105,10 @@
                 <p>If you see this page, it will be in one of the following cases.</p>
                 <hr>
                 {% if mode_file %}
-                <p class="mb-1">- Uploaded Data is not *.txt or *.csv</p>
+                <p class="mb-2">- Uploaded Data is not *.txt or *.csv</p>
                 {% endif %}
-                <p class="mb-1">- The amount of data entered is so small that it can not be analyzed.</p>
-                <p class="mb-1">- The value of Edge Remove Threshold is too high. Edge Remove Threshold should be a reasonable value for the amount of data.</p>
+                <p class="mb-2">- The amount of data entered is so small that it can not be analyzed.</p>
+                <p class="mb-2">- The value of Edge Remove Threshold is too high. Edge Remove Threshold should be a reasonable value for the amount of data.</p>
         </div>
         <a href="{% if mode_file %}{% url 'viz:sna_file' %}{% else %}{% url 'viz:sna' %}{% endif %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
 </div>

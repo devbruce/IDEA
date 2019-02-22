@@ -80,7 +80,7 @@ def sna(request):
             footer_sticky = True
             try:
                 make_sna_png(**options)
-            except ValueError:
+            except(ValueError, KeyError):
                 value_error = True
                 footer_sticky = False
             return render(request, 'viz/show_result/sna.html',
@@ -208,7 +208,7 @@ def sna_file(request):
             footer_sticky = True
             try:
                 make_sna_png(**options)
-            except ValueError:
+            except(ValueError, KeyError):
                 value_error = True
                 footer_sticky = False
             return render(request, 'viz/show_result/sna.html',

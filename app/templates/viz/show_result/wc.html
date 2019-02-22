@@ -17,9 +17,9 @@
         <p>If you see this page, it will be in one of the following cases.</p>
         <hr>
         {% if mode_file %}
-        <p class="mb-1">- Uploaded Data is not *.txt or *.csv</p>
+        <p class="mb-2">- Uploaded Data is not *.txt or *.csv</p>
         {% endif %}
-        <p class="mb-1">- The amount of data entered is so small that it can not be analyzed.</p>
+        <p class="mb-2">- The amount of data entered is so small that it can not be analyzed.</p>
     </div>
     <a href="{% if mode_file %}{% url 'viz:wc_file' %}{% else %}{% url 'viz:wc' %}{% endif %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
 </div>
