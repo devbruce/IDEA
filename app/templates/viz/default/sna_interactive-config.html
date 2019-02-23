@@ -7,13 +7,12 @@
 <h2 class="text-center m-3"><b>Semantic Network Analysis</b> <span class="badge badge-pill badge-danger">Interactive</span></h2>
 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <div class="container-fluid">
-
-        {% render_field form.data class="form-control data-box" placeholder="Put your data here. If you try to visualize with blank, sample data is automatically entered." %}
+        {{ form.data }}
         <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
 
         <div class="row">
             <div class="col-sm-6">
-                <b>Network Size</b> {% render_field form.node_num class="form-control" %}
+                <b>{{ form.node_num.label }}</b> {% render_field form.node_num class="form-control" %}
                 <span class="form-text text-muted help_text mb-3">{{ form.node_num.help_text }}</span>
             </div>
             <div class="col-sm-6">
@@ -30,7 +29,10 @@
                     <div class="row">
 
                         <div class="col-sm-6">
-                            <b>Edge Remove Threshold</b> {% render_field form.edge_remove_threshold class="form-control mb-3" %}
+                            <b>{{ form.edge_remove_threshold.label }}</b> {{ form.edge_remove_threshold }}
+                            {% for error in form.edge_remove_threshold.errors %}
+                            <small class="form-text text-danger">{{ error }}</small>
+                            {% endfor %}
                         </div>
                         <div class="col-sm-6">
                             <br>
@@ -44,11 +46,15 @@
 
                     </div>
 
-                    <b>{{ form.stopwords.label }}</b> {% render_field form.stopwords class="form-control" %}
+                    <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
                     <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
 
-                    <b>{{ form.iterations.label }}</b> {% render_field form.iterations class="form-control mb-3" %}
-                    <b>{{ form.layout.label }}</b> {% render_field form.layout class="form-control mb-3" %}
+                    <b>{{ form.iterations.label }}</b> {{ form.iterations }}
+                    {% for error in form.iterations.errors %}
+                    <small class="form-text text-danger mb-3">{{ error }}</small>
+                    {% endfor %}
+
+                    <div class="mt-3"><b>{{ form.layout.label }}</b></div> {% render_field form.layout class="form-control mb-3" %}
 
                     <div class="row">
 
@@ -57,7 +63,10 @@
                             <div class="collapse" id="fr-config">
                                 <div class="card card-body mb-3">
                                     <div class="container-fluid">
-                                        <b>k Variable</b> {% render_field form.fr_k class="form-control" %}
+                                        <b>{{ form.fr_k.label }}</b> {{ form.fr_k }}
+                                        {% for error in form.fr_k.errors %}
+                                        <small class="form-text text-danger mb-1">{{ error }}</small>
+                                        {% endfor %}
                                         <span class="form-text text-muted help_text mb-3">{{ form.fr_k.help_text }}</span>
                                     </div>
                                 </div>
@@ -69,8 +78,11 @@
                             <div class="collapse" id="fa2-config">
                                 <div class="card card-body mb-3">
                                     <div class="container-fluid">
-                                        <b>Square Variable</b> {% render_field form.fa2_square class="form-control mb-3" %}
-                                        <b>log(base) Variable</b> {% render_field form.fa2_log_base class="form-control" %}
+                                        <b>{{ form.fa2_square.label }}</b> {% render_field form.fa2_square class="form-control mb-3" %}
+                                        <b>{{ form.fa2_log_base.label }}</b> {{ form.fa2_log_base }}
+                                        {% for error in form.fa2_log_base.errors %}
+                                        <small class="form-text text-danger mb-1">{{ error }}</small>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>

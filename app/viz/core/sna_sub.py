@@ -116,11 +116,12 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
 
     """
     # Edge Remove Threshold
-    edge_low = list()
-    for u, v in graph.edges:
-        if graph[u][v]['weight'] <= edge_remove_threshold:
-            edge_low.append((u, v))
-    graph.remove_edges_from(edge_low)  # Remove Edge If(edge weight <= edge_remove_threshold)
+    if edge_remove_threshold > 0:
+        edge_low = list()
+        for u, v in graph.edges:
+            if graph[u][v]['weight'] <= edge_remove_threshold:
+                edge_low.append((u, v))
+        graph.remove_edges_from(edge_low)  # Remove Edge If(edge weight <= edge_remove_threshold)
 
     # Make tf_sum_dict (Total of Term Frequency Dictionary)
     td_matrix = matrix.get('td_matrix')

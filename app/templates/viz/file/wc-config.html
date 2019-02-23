@@ -14,13 +14,16 @@
 
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="data-addon">Data</span>
+                    <span class="input-group-text" id="data-addon">{{ form.data.label }}</span>
                 </div>
                 <div class="custom-file">
-                    {% render_field form.data class="custom-file-input" id="datafile" aria-describedby="data-addon" %}
-                    <label class="custom-file-label" for="datafile">Choose file (*.txt, *.csv)</label>
+                    {{ form.data }}
+                    <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
                 </div>
             </div>
+            {% for error in form.data.errors %}
+            <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
             <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
 
         </div>
@@ -30,17 +33,21 @@
             <div class="card card-body mt-1">
 
                 <div class="container-fluid">
-                    <b>Word Size</b> {% render_field form.max_word_size class="form-control" %}
-                    <span class="form-text text-muted help_text mb-3">{{ form.max_word_size.help_text }}</span>
-                    <b>Background Color</b> {% render_field form.bg_color class="form-control mb-3" %}
+                    <b>{{ form.max_word_size.label }}</b> {{ form.max_word_size }}
+                    <span class="form-text text-muted help_text mb-1">{{ form.max_word_size.help_text }}</span>
+                    {% for error in form.max_word_size.errors %}
+                    <small class="form-text text-danger mb-3">{{ error }}</small>
+                    {% endfor %}
+
+                    <b>{{ form.bg_color.label }}</b> {% render_field form.bg_color class="form-control mb-3" %}
 
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="fontfile-addon">Font</span>
+                            <span class="input-group-text" id="fontfile-addon">{{ form.font.label }}</span>
                         </div>
                         <div class="custom-file">
-                            {% render_field form.font class="custom-file-input" id="fontfile" aria-describedby="fontfile-addon" %}
-                            <label class="custom-file-label" for="fontfile">Choose font file</label>
+                            {{ form.font }}
+                            <label class="custom-file-label" for="fontfile">Choose Font File</label>
                         </div>
                     </div>
                     <span class="form-text text-muted help_text mb-3">{{ form.font.help_text }}</span>
@@ -50,11 +57,11 @@
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="maskfile-addon">Mask</span>
+                                    <span class="input-group-text" id="maskfile-addon">{{ form.mask.label }}</span>
                                 </div>
                                 <div class="custom-file">
                                     {% render_field form.mask class="custom-file-input" id="maskfile" aria-describedby="maskfile-addon" %}
-                                    <label class="custom-file-label" for="maskfile">Choose image file</label>
+                                    <label class="custom-file-label" for="maskfile">Choose Image File</label>
                                 </div>
                             </div>
                             <span class="form-text text-muted help_text mb-3">{{ form.mask.help_text }}</span>
@@ -63,7 +70,7 @@
                         <div class="col-sm-6">
                             <div class="btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-secondary btn-block text-light">
-                                    {% render_field form.mask_coloring autocomplete="off" %} Mask Coloring
+                                    {% render_field form.mask_coloring autocomplete="off" %} {{ form.mask_coloring.label }}
                                 </label>
                                 <span class="form-text text-muted help_text mb-3">{{ form.mask_coloring.help_text }}</span>
                             </div>
@@ -71,7 +78,7 @@
 
                     </div>
 
-                    <b>{{ form.stopwords.label }}</b> {% render_field form.stopwords class="form-control" %}
+                    <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
                     <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
                 </div>
 

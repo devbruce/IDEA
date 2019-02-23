@@ -8,24 +8,26 @@
 
 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <div class="container-fluid">
-        {% render_field form.data class="form-control data-box mb-3" placeholder="Put your data here. If you try to visualize with blank, sample data is automatically entered." %}
-
-
+        {{ form.data }}
         <button class="btn btn-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#detail-config" aria-expanded="false" aria-controls="detail-config">Detail Configuration</button>
         <div class="collapse" id="detail-config">
             <div class="card card-body mt-1">
 
                 <div class="container-fluid">
-                    <b>Word Size</b> {% render_field form.max_word_size class="form-control" %}
-                    <span class="form-text text-muted help_text mb-3">{{ form.max_word_size.help_text }}</span>
-                    <b>Background Color</b> {% render_field form.bg_color class="form-control mb-3" %}
+                    <b>{{ form.max_word_size.label }}</b> {{ form.max_word_size }}
+                    <span class="form-text text-muted help_text mb-1">{{ form.max_word_size.help_text }}</span>
+                    {% for error in form.max_word_size.errors %}
+                    <small class="form-text text-danger mb-3">{{ error }}</small>
+                    {% endfor %}
+
+                    <b>{{ form.bg_color.label }}</b> {% render_field form.bg_color class="form-control mb-3" %}
 
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="fontfile-addon">Font</span>
+                            <span class="input-group-text" id="fontfile-addon">{{ form.font.label }}</span>
                         </div>
                         <div class="custom-file">
-                            {% render_field form.font class="custom-file-input" id="fontfile" aria-describedby="fontfile-addon" %}
+                            {{ form.font }}
                             <label class="custom-file-label" for="fontfile">Choose font file</label>
                         </div>
                     </div>
@@ -36,11 +38,11 @@
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="maskfile-addon">Mask</span>
+                                    <span class="input-group-text" id="maskfile-addon">{{ form.mask.label }}</span>
                                 </div>
                                 <div class="custom-file">
                                     {% render_field form.mask class="custom-file-input" id="maskfile" aria-describedby="maskfile-addon" %}
-                                    <label class="custom-file-label" for="maskfile">Choose image file</label>
+                                    <label class="custom-file-label" for="maskfile">Choose Image File</label>
                                 </div>
                             </div>
                             <span class="form-text text-muted help_text mb-3">{{ form.mask.help_text }}</span>
@@ -49,7 +51,7 @@
                         <div class="col-sm-6">
                             <div class="btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-secondary btn-block text-light">
-                                    {% render_field form.mask_coloring autocomplete="off" %} Mask Coloring
+                                    {% render_field form.mask_coloring autocomplete="off" %} {{ form.mask_coloring.label }}
                                 </label>
                                 <span class="form-text text-muted help_text mb-3">{{ form.mask_coloring.help_text }}</span>
                             </div>
@@ -57,7 +59,7 @@
 
                     </div>
 
-                    <b>{{ form.stopwords.label }}</b> {% render_field form.stopwords class="form-control" %}
+                    <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
                     <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
                 </div>
 
