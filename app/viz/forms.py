@@ -237,6 +237,8 @@ class WcForm(forms.Form):
 
     def clean_font(self):
         font_file = self.cleaned_data['font']
+        if not font_file:
+            return None
         file_extension = str(font_file)[:-3]
         if file_extension not in ('ttf', 'otf'):
             self.fields['font'].widget.attrs['class'] += ' is-invalid'

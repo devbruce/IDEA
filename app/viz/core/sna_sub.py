@@ -51,11 +51,11 @@ def get_corpus(data):
     return corpus
 
 
-def get_matrix(corpus, sw):
+def get_matrix(corpus, stopwords):
     """Make data related to matrix
 
     :param numpy.ndarray corpus: corpus data made by ``core.sna_sub.get_corpus``
-    :param str sw: Stopwords separated ','
+    :param str stopwords: Stopwords separated ','
     :return: dict
 
     **Keys of returned dict**
@@ -66,17 +66,17 @@ def get_matrix(corpus, sw):
 
     """
     # -- Make Stop Word List -- #
-    if sw:
-        sw = sw.replace(' ', '')
-        sw_list = sw.split(',')
+    if stopwords:
+        stopwords = stopwords.replace(' ', '')
+        stopwords_list = stopwords.split(',')
     else:
-        sw_list = None
+        stopwords_list = None
 
     # -- Make Cooccur Matrix -- #
     term_vectorizer = CountVectorizer(
         min_df=1,  # Frequency >= 1
         token_pattern=r'\w{2,}',  # Length >= 2
-        stop_words=sw_list,
+        stop_words=stopwords_list,
     )
     term_names = term_vectorizer.fit(corpus).get_feature_names()
     td_matrix = term_vectorizer.fit_transform(corpus)  # Get Term-Document Matrix
