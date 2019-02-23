@@ -5,7 +5,7 @@ import pandas as pd
 class SnaUploadedFileCleanMixin(forms.Form):
     data = forms.FileField(
         required=True,
-        label='Data File Input Box',
+        label='Data',
         widget=forms.FileInput(
             attrs={
                 'class': 'custom-file-input',
@@ -235,6 +235,14 @@ class WcForm(forms.Form):
         help_text='Brings the color of the mask intact. Default : OFF',
     )
 
+    def clean_font(self):
+        font_file = self.cleaned_data['font']
+        file_extension = str(font_file)[:-3]
+        if file_extension not in ('ttf', 'otf'):
+            self.fields['font'].widget.attrs['class'] += ' is-invalid'
+            raise forms.ValidationError('Uploaded File is not font file. (This file has not font extensions.)')
+        return font_file
+
     def clean_max_word_size(self):
         max_word_size = self.cleaned_data['max_word_size']
         if max_word_size < 0:
@@ -246,10 +254,12 @@ class WcForm(forms.Form):
 class WcFileForm(WcForm):
     data = forms.FileField(
         required=True,
-        label='Data File Input Box',
+        label='Data',
         widget=forms.FileInput(
             attrs={
-                'class': 'custom-file-input','id': 'datafile','aria-describedby': 'data-addon',
+                'class': 'custom-file-input',
+                'id': 'datafile',
+                'aria-describedby': 'data-addon',
             }
         ),
         help_text='txt, csv files are supported.',

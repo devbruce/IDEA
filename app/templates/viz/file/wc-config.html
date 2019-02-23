@@ -47,9 +47,12 @@
                         </div>
                         <div class="custom-file">
                             {{ form.font }}
-                            <label class="custom-file-label" for="fontfile">Choose Font File</label>
+                            <label class="custom-file-label" for="fontfile">Choose Font File (*.ttf, *.otf)</label>
                         </div>
                     </div>
+                    {% for error in form.font.errors %}
+                    <small class="form-text text-danger mb-3">{{ error }}</small>
+                    {% endfor %}
                     <span class="form-text text-muted help_text mb-3">{{ form.font.help_text }}</span>
 
                     <div class="row">
