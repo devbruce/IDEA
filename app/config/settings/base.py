@@ -104,6 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Always use TemporaryFileUploadHandler (No use InMemoryUploadedFile) for using temporary_file_path
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
