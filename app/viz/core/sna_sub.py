@@ -37,17 +37,12 @@ def get_corpus(data):
     cleaned_post_list = []
     for post in post_list:
         # Cleansing Process (Only get nouns)
-        post = re.sub(r'\W', ' ', post)  # Remove Special Characters
-        post = str(nlp.nouns(post))  # nlp.nouns returns nouns list. so, change list to str
-        post = re.sub(r'\W', ' ', post)  # Remove Special Characters again (such as '[' , ',' , ']')
-        post = re.sub(r'\s+', ' ', post).strip()  # Change two or more consecutive blanks to one blank
+        post = re.sub(r'\W', ' ', post)  # Change Special Characters and blanks (Not words) to ' '(one blank)
+        post = ' '.join(nlp.nouns(post))  # nlp.nouns returns nouns list. so, unpacking list (to str)
         if post:  # if post is null, Not add
             cleaned_post_list.append(post)  # Append cleaned post(only nouns) to cleaned_post_list
 
-    cleaned_post_dataframe = pd.DataFrame(cleaned_post_list)
-    cleaned_post_dataframe.columns = ['content']
-
-    corpus = np.array(cleaned_post_dataframe['content'])
+    corpus = np.array(cleaned_post_list)
     return corpus
 
 
