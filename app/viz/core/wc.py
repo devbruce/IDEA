@@ -13,11 +13,18 @@ __all__ = [
 ]
 
 
-def make_wc_png(data, max_word_size=100, bg_color='white', mask=None, mask_coloring=True, font=None, stopwords=None):
+def make_wc_png(
+        data,
+        max_word_size=100,
+        word_len_min=1,
+        bg_color='white',
+        mask=None, mask_coloring=True, font=None, stopwords=None
+):
     """Make and Save wc image file (``/.viz_raw/wc.png``)
 
     :param str data:
     :param int max_word_size:
+    :param int word_len_min:
     :param str bg_color:
     :param django.core.files.uploadedfile.TemporaryUploadedFile mask:
     :param bool mask_coloring:
@@ -38,6 +45,15 @@ def make_wc_png(data, max_word_size=100, bg_color='white', mask=None, mask_color
         stopwords = stopwords.replace(' ', '')
         stopwords_list = stopwords.split(',')
         for word in stopwords_list:
+            del data_nouns_cnt[word]
+
+    # Minimum Word Length Process
+    if word_len_min > 1:
+        word_len_min_del_list = list()
+        for word in data_nouns_cnt:
+            if len(word) < word_len_min:
+                word_len_min_del_list.append(word)
+        for word in word_len_min_del_list:
             del data_nouns_cnt[word]
 
     # Set Font

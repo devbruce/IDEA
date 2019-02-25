@@ -217,6 +217,16 @@ class WcForm(forms.Form):
         help_text='Type the words you want to exclude from the results. '
                   '(If there are several, separate them by comma)',
     )
+    word_len_min = forms.IntegerField(
+        required=True,
+        label='Minimum Word Length',
+        initial=2,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control mb-1',
+            }
+        )
+    )
     max_word_size = forms.IntegerField(
         required=True,
         label='Max Word Size',
@@ -251,6 +261,13 @@ class WcForm(forms.Form):
         initial=False,
         help_text='Brings the color of the mask intact. Default : OFF',
     )
+
+    def clean_word_len_min(self):
+        word_len_min = self.cleaned_data['word_len_min']
+        if word_len_min < 1:
+            self.fields['word_len_min'].widget.attrs['class'] += ' is-invalid'
+            raise forms.ValidationError("Minimum Word Length can't be less than 1")
+        return word_len_min
 
     def clean_font(self):
         font_file = self.cleaned_data['font']

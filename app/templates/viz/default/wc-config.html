@@ -62,8 +62,22 @@
 
                     </div>
 
-                    <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
-                    <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+                    <div class="row">
+
+                        <div class="col">
+                            <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
+                            <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+                        </div>
+
+                        <div class="col">
+                            <b>{{ form.word_len_min.label }}</b> {{ form.word_len_min }}
+                            {% for error in form.word_len_min.errors %}
+                            <small class="form-text text-danger mb-3">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
