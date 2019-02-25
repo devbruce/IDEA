@@ -69,18 +69,28 @@ class SnaForm(forms.Form):
         required=True,
         label='Edge Remove Threshold',
         initial=0,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1'
+                'class': 'form-control mb-1',
             }
         ),
+    )
+    word_len_min = forms.IntegerField(
+        required=True,
+        label='Minimum Word Length',
+        initial=2,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control mb-1',
+            }
+        )
     )
     stopwords = forms.CharField(
         required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'ex) text,data,visualizer'
+                'placeholder': 'ex) Word1,Word2,Word3',
             }
         ),
         help_text='Type the words you want to exclude from the results. '
@@ -95,7 +105,7 @@ class SnaForm(forms.Form):
     iterations = forms.IntegerField(
         required=True,
         initial=50,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 'class': 'form-control'
             }
@@ -106,7 +116,7 @@ class SnaForm(forms.Form):
         required=True,
         label='Variable k',
         initial=0,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 'class': 'form-control mb-1'
             }
@@ -119,7 +129,7 @@ class SnaForm(forms.Form):
         required=True,
         label='Variable log(base)',
         initial=100,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 'class': 'form-control mb-1'
             }
@@ -132,6 +142,13 @@ class SnaForm(forms.Form):
             self.fields['edge_remove_threshold'].widget.attrs['class'] += ' is-invalid'
             raise forms.ValidationError("Edge Remove Threshold can't be negative")
         return edge_remove_threshold
+
+    def clean_word_len_min(self):
+        word_len_min = self.cleaned_data['word_len_min']
+        if word_len_min < 1:
+            self.fields['word_len_min'].widget.attrs['class'] += ' is-invalid'
+            raise forms.ValidationError("Minimum Word Length can't be less than 1")
+        return word_len_min
 
     def clean_iterations(self):
         iterations = self.cleaned_data['iterations']
@@ -194,7 +211,7 @@ class WcForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'ex) text,data,visualizer'
+                'placeholder': 'ex) Word1,Word2,Word3',
             }
         ),
         help_text='Type the words you want to exclude from the results. '

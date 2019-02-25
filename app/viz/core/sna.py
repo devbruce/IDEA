@@ -10,13 +10,14 @@ __all__ = [
 ]
 
 
-def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, stopwords=None, remove_isolated_node=True,
+def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, word_len_min=2, stopwords=None, remove_isolated_node=True,
                   layout='fr', iterations=50, fr_k=None, fa2_option=(2, 100)):
     """Make sna_gexf for SNA Interactive
 
     :param str,list data: String Data (One post per line) | List Data (One post per element)
     :param int node_num: Number of nodes
     :param int edge_remove_threshold:
+    :param int word_len_min:
     :param str stopwords: Stopwords separated ','
     :param bool remove_isolated_node:
     :param str layout:
@@ -28,7 +29,7 @@ def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, stopwords=None, re
     """
 
     corpus = get_corpus(data=data)
-    matrix = get_matrix(corpus=corpus, stopwords=stopwords)
+    matrix = get_matrix(corpus=corpus, word_len_min=word_len_min, stopwords=stopwords)
     cooccur_matrix = matrix.get('cooccur_matrix')
 
     # Get Graph

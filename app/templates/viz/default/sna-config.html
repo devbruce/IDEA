@@ -22,13 +22,13 @@
 
                     <div class="row">
 
-                        <div class="col-sm-6">
+                        <div class="col">
                             <b>{{ form.edge_remove_threshold.label }}</b> {{ form.edge_remove_threshold }}
                             {% for error in form.edge_remove_threshold.errors %}
                             <small class="form-text text-danger">{{ error }}</small>
                             {% endfor %}
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col">
                             <br>
                             <div class="btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-secondary btn-block active text-light">
@@ -40,8 +40,21 @@
 
                     </div>
 
-                    <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
-                    <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+                    <div class="row">
+
+                        <div class="col">
+                            <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
+                            <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+                        </div>
+
+                        <div class="col">
+                            <b>{{ form.word_len_min.label }}</b> {{ form.word_len_min }}
+                            {% for error in form.word_len_min.errors %}
+                            <small class="form-text text-danger mb-3">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
 
                     <b>{{ form.iterations.label }}</b> {{ form.iterations }}
                     {% for error in form.iterations.errors %}
@@ -52,7 +65,7 @@
 
                     <div class="row">
 
-                        <div class="col-sm-6">
+                        <div class="col">
                             <button class="btn btn-outline-info btn-block dropdown-toggle mb-3" type="button" data-toggle="collapse" data-target="#fr-config" aria-expanded="false" aria-controls="fr-config">Layout: Fruchterman Reingold Config</button>
                             <div class="collapse" id="fr-config">
                                 <div class="card card-body mb-3">
@@ -67,7 +80,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col">
                             <button class="btn btn-outline-info btn-block dropdown-toggle mb-3" type="button" data-toggle="collapse" data-target="#fa2-config" aria-expanded="false" aria-controls="fa2-config">Layout: ForceAtlas2 Config</button>
                             <div class="collapse" id="fa2-config">
                                 <div class="card card-body mb-3">
