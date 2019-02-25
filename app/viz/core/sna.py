@@ -10,8 +10,18 @@ __all__ = [
 ]
 
 
-def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, word_len_min=2, stopwords=None, remove_isolated_node=True,
-                  layout='fr', iterations=50, fr_k=None, fa2_option=(2, 100)):
+def make_sna_gexf(
+        data,
+        node_num=30,
+        edge_remove_threshold=0,
+        word_len_min=2,
+        stopwords=None,
+        remove_isolated_node=True,
+        layout='fr',
+        iterations=50,
+        fr_k=None,
+        fa2_square=2, fa2_log_base=100
+):
     """Make sna_gexf for SNA Interactive
 
     :param str,list data: String Data (One post per line) | List Data (One post per element)
@@ -23,7 +33,8 @@ def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, word_len_min=2, st
     :param str layout:
     :param int iterations:
     :param int fr_k:
-    :param tuple fa2_option:
+    :param int fa2_square:
+    :param int fa2_log_base:
     :return: none
 
     """
@@ -73,7 +84,7 @@ def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, word_len_min=2, st
         for node in pos:
             raw_x, raw_y = pos[node]
             # -- Scaling Pos -- #
-            adj_x, adj_y = [math.log(abs(coord) ** fa2_option[0], fa2_option[1]) for coord in pos[node]]
+            adj_x, adj_y = [math.log(abs(coord) ** fa2_square, fa2_log_base) for coord in pos[node]]
             if raw_x < 0: adj_x *= -1
             if raw_y < 0: adj_y *= -1
             # ----------------- #
@@ -82,8 +93,17 @@ def make_sna_gexf(data, node_num=30, edge_remove_threshold=0, word_len_min=2, st
     write_gexf(graph=sub_G)
 
 
-def make_sna_png(data, node_num=30, edge_remove_threshold=0, stopwords=None, remove_isolated_node=True,
-                layout='fr', iterations=50, fr_k=None, fa2_option=(2, 100)):
+def make_sna_png(
+        data,
+        node_num=30,
+        edge_remove_threshold=0,
+        stopwords=None,
+        remove_isolated_node=True,
+        layout='fr',
+        iterations=50,
+        fr_k=None,
+        fa2_square=2, fa2_log_base=100
+):
     """Make SNA image for SNA Simple Image
 
     :param str,list data: String Data (One post per line) | List Data (One post per element)
@@ -94,7 +114,8 @@ def make_sna_png(data, node_num=30, edge_remove_threshold=0, stopwords=None, rem
     :param str layout:
     :param int iterations:
     :param int fr_k:
-    :param tuple fa2_option:
+    :param int fa2_square:
+    :param int fa2_log_base:
     :return: none
 
     """
@@ -144,7 +165,7 @@ def make_sna_png(data, node_num=30, edge_remove_threshold=0, stopwords=None, rem
         for node in pos:
             raw_x, raw_y = pos[node]
             # -- Scaling Pos -- #
-            adj_x, adj_y = [math.log(abs(coord) ** fa2_option[0], fa2_option[1]) for coord in pos[node]]
+            adj_x, adj_y = [math.log(abs(coord) ** fa2_square, fa2_log_base) for coord in pos[node]]
             if raw_x < 0: adj_x *= -1
             if raw_y < 0: adj_y *= -1
             # ----------------- #

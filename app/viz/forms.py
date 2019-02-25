@@ -1,4 +1,6 @@
 from django import forms
+from django.conf import settings
+import os
 import pandas as pd
 
 
@@ -136,6 +138,13 @@ class SnaForm(forms.Form):
         ),
     )
 
+    def clean_data(self):
+        return self.cleaned_data['data'] or open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
+
+    def clean_node_num(self):
+        node_num = self.cleaned_data['node_num']
+        return int(node_num)
+
     def clean_edge_remove_threshold(self):
         edge_remove_threshold = self.cleaned_data['edge_remove_threshold']
         if edge_remove_threshold < 0:
@@ -159,7 +168,9 @@ class SnaForm(forms.Form):
 
     def clean_fr_k(self):
         fr_k = self.cleaned_data['fr_k']
-        if fr_k < 0:
+        if fr_k == 0:
+            fr_k = None
+        elif fr_k < 0:
             self.fields['fr_k'].widget.attrs['class'] += ' is-invalid'
             raise forms.ValidationError("k can't be negative")
         return fr_k
