@@ -70,7 +70,7 @@ def get_matrix(corpus, stopwords):
     # -- Make Cooccur Matrix -- #
     term_vectorizer = CountVectorizer(
         min_df=1,  # Frequency >= 1
-        token_pattern=r'\w{2,}',  # Length >= 2
+        token_pattern=r'\w{1,}',  # Length >= 1
         stop_words=stopwords_list,
     )
     term_names = term_vectorizer.fit(corpus).get_feature_names()
