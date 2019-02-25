@@ -1,7 +1,7 @@
-from django import forms
-from django.conf import settings
 import os
 import pandas as pd
+from django import forms
+from django.conf import settings
 
 
 class SnaUploadedFileCleanMixin(forms.Form):

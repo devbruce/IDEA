@@ -1,9 +1,9 @@
-from PIL import Image
-from django.conf import settings
 import os
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.conf import settings
 from . import forms
+from PIL import Image
 from .core.sna import *
 from .core.wc import *
 
