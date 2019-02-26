@@ -123,7 +123,7 @@ def make_sna_png(
     """
     
     corpus = get_corpus(data=data)
-    matrix = get_matrix(corpus=corpus, word_len_min=2, stopwords=stopwords)
+    matrix = get_matrix(corpus=corpus, word_len_min=word_len_min, stopwords=stopwords)
     cooccur_matrix = matrix.get('cooccur_matrix')
     
     # -- Make Raw Graph -- #
