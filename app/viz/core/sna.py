@@ -47,7 +47,8 @@ def gen_gexf_and_pass_partition_data(
 
     # Get Sub Data
     sub_data = get_sub_data(
-        graph=G, node_num=node_num,
+        graph=G,
+        node_num=node_num,
         edge_remove_threshold=edge_remove_threshold,
         remove_isolated_node=remove_isolated_node,
         matrix=matrix
@@ -99,19 +100,19 @@ def gen_gexf_and_pass_partition_data(
     # Generate gexf file
     write_gexf(graph=sub_G)
 
-    # Pass Partition Data
+    # ------ Pass partition data to template ------ #
     partition = community.best_partition(sub_G)
-    partition_cnt = max(partition.values()) + 1
-    node_freq_per_klass = {n: list() for n in range(partition_cnt)}
+    partition_len = max(partition.values()) + 1
+    node_freq_per_klass = {n: list() for n in range(partition_len)}
     for node, klass in partition.items():
         node_freq_per_klass[klass].append((node, scaled_weight_dict[node]))
 
-    top_node_per_klass = [None] * partition_cnt
+    top_node_per_klass = [None] * partition_len
     for klass, node_freq in node_freq_per_klass.items():
         top_node_per_klass[klass] = max(node_freq, key=lambda x : x[1])[0]
 
-    result = {
+    partition_pass_to_template = {
+        'partition_len': partition_len,
         'top_node_per_klass': top_node_per_klass,
-        'partition_cnt': len(top_node_per_klass),
     }
-    return result
+    return partition_pass_to_template

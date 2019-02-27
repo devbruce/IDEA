@@ -11,7 +11,7 @@
 <script src="{% static 'js/echarts/dataTool.min.js' %}"></script>
 <script>
         <!--Declare Partition Data-->
-        var partition_cnt = {{ partition_data.partition_cnt }};
+        var partition_len = {{ partition_data.partition_len }};
         var top_node_per_klass = {{ partition_data.top_node_per_klass|safe }};
 
         <!--ECharts - Les Miserables-->
@@ -29,7 +29,7 @@
 
                 var graph = echarts.dataTool.gexf.parse(xml);
                 var categories = [];
-                for (var i = 0; i < partition_cnt; i++) {
+                for (var i = 0; i < partition_len; i++) {
                     categories[i] = {
                         name: top_node_per_klass[i]
                     };
