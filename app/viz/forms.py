@@ -78,7 +78,7 @@ class SnaInteractiveForm(forms.Form):
     )
     iterations = forms.IntegerField(
         required=True,
-        initial=100,
+        initial=60,
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control'
