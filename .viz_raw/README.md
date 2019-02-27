@@ -6,5 +6,4 @@
 <br>
 
 - `*.png`
-  - Semantic Network Analysis (Simple Image)
-  - Word Cloud (Simple Image)
+  - Word Cloud

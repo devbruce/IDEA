@@ -83,9 +83,7 @@ $ export DJANGO_SETTINGS_MODULE=config.settings.local
 
 - Semantic Network Analysis (Interactive) (with [ECharts](http://echarts.baidu.com/) - [Les Miserables](http://www.echartsjs.com/examples/editor.html?c=graph))
 
-- Semantic Network Analysis (Simple Image)
-
-- Word Cloud (Simple Image)
+- Word Cloud
 
 <br><br>
 
@@ -107,7 +105,7 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 
 ## Preview
 
-- **Home** / **Semantic Network Analysis (Interactive)**
+- **Home** / **Config Page**
 
 <br>
 
@@ -115,25 +113,23 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 <a href="https://github.com/DevBruce/IDEA/blob/master/preview/home.png">
 <img src="https://github.com/DevBruce/IDEA/blob/master/preview/home.png" width="400">
 </a>
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/sna_interactive.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/sna_interactive.png" width="400">
+<a href="https://github.com/DevBruce/IDEA/blob/master/preview/config_page.png">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/config_page.png" width="400">
 </a>
-</div>
-
 </div>
 
 <br><br>
 
-- **Semantic Network Analysis (Simple Image)** / **Word Cloud (Simple Image)**
+- **Semantic Network Analysis (Interactive)** / **Word Cloud (Simple Image)**
 
 <br>
 
 <div align="center">
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/sna_simple.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/sna_simple.png" width="400">
+<a href="https://github.com/DevBruce/IDEA/blob/master/preview/sna_interactive.png">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/sna_interactive.png" width="400">
 </a>
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/wc_simple.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/wc_simple.png" width="400">
+<a href="https://github.com/DevBruce/IDEA/blob/master/preview/wc.png">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/wc.png" width="400">
 </a>
 </div>
 
