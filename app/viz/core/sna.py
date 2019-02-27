@@ -1,14 +1,15 @@
 import networkx as nx
 import math
+import community
 from fa2 import ForceAtlas2
 from .sna_sub import *
 
 __all__ = [
-    'make_sna_gexf',
+    'gen_gexf_and_pass_partition_data',
 ]
 
 
-def make_sna_gexf(
+def gen_gexf_and_pass_partition_data(
         data,
         node_num=30,
         edge_remove_threshold=0,
@@ -20,7 +21,7 @@ def make_sna_gexf(
         fr_k=None,
         fa2_square=2, fa2_log_base=100
 ):
-    """Make sna_gexf for SNA Interactive
+    """Generate gexf file for SNA Interactive and Pass partition data
 
     :param str,list data: String Data (One post per line) | List Data (One post per element)
     :param int node_num: Number of nodes
@@ -94,4 +95,23 @@ def make_sna_gexf(
             # ----------------- #
             sub_G.nodes[node]['viz']['position'] = {'x': adj_x, 'y': adj_y}
     # -------------------------- #
+
+    # Generate gexf file
     write_gexf(graph=sub_G)
+
+    # Pass Partition Data
+    partition = community.best_partition(sub_G)
+    partition_cnt = max(partition.values()) + 1
+    node_freq_per_klass = {n: list() for n in range(partition_cnt)}
+    for node, klass in partition.items():
+        node_freq_per_klass[klass].append((node, scaled_weight_dict[node]))
+
+    top_node_per_klass = [None] * partition_cnt
+    for klass, node_freq in node_freq_per_klass.items():
+        top_node_per_klass[klass] = max(node_freq, key=lambda x : x[1])[0]
+
+    result = {
+        'top_node_per_klass': top_node_per_klass,
+        'partition_cnt': len(top_node_per_klass),
+    }
+    return result

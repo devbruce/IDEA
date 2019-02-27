@@ -7,9 +7,14 @@
 
 <div id="container" style="height: 100%; margin: 0;"></div>
 <a href="{% if mode_file %}{% url 'viz:sna_interactive_file' %}{% else %}{% url 'viz:sna_interactive' %}{% endif %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
-<script type="text/javascript" src="{% static 'js/echarts/echarts.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/echarts/dataTool.min.js' %}"></script>
-<script type="text/javascript">
+<script src="{% static 'js/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'js/echarts/dataTool.min.js' %}"></script>
+<script>
+        <!--Declare Partition Data-->
+        var partition_cnt = {{ partition_data.partition_cnt }};
+        var top_node_per_klass = {{ partition_data.top_node_per_klass|safe }};
+
+        <!--ECharts - Les Miserables-->
         var dom = document.getElementById("container");
         var myChart = echarts.init(dom, "{{ theme }}");
         var app = {};
@@ -24,9 +29,9 @@
 
                 var graph = echarts.dataTool.gexf.parse(xml);
                 var categories = [];
-                for (var i = 0; i < 9; i++) {
+                for (var i = 0; i < partition_cnt; i++) {
                     categories[i] = {
-                        name: 'Group' + i
+                        name: top_node_per_klass[i]
                     };
                 }
                 graph.nodes.forEach(function (node) {

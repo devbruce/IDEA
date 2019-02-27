@@ -17,7 +17,7 @@ def sna_interactive(request):
             value_error, footer_sticky = False, True
 
             try:
-                make_sna_gexf(**options)
+                partition_data = gen_gexf_and_pass_partition_data(**options)
             except ValueError:
                 value_error, footer_sticky = True, False
 
@@ -25,6 +25,7 @@ def sna_interactive(request):
                 'theme': theme,
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
+                'partition_data': partition_data,
             }
             return render(request, 'viz/show_result/sna_interactive.html', context)
     else:
@@ -66,7 +67,7 @@ def sna_interactive_file(request):
             value_error, footer_sticky = False, True
 
             try:
-                make_sna_gexf(**options)
+                partition_data = gen_gexf_and_pass_partition_data(**options)
             except ValueError:
                 value_error, footer_sticky = True, False
 
@@ -75,6 +76,7 @@ def sna_interactive_file(request):
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
                 'mode_file': True,
+                'partition_data': partition_data,
             }
             return render(request, 'viz/show_result/sna_interactive.html', context)
     else:
