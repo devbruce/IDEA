@@ -4,41 +4,7 @@ from django import forms
 from django.conf import settings
 
 
-class SnaUploadedFileCleanMixin(forms.Form):
-    data = forms.FileField(
-        required=True,
-        label='Data',
-        widget=forms.FileInput(
-            attrs={
-                'class': 'custom-file-input',
-                'id': 'datafile',
-                'aria-describedby': 'data-addon',
-            }
-        ),
-        help_text='txt, csv files are supported. '
-                  'One post must be entered per line(row).',
-    )
-
-    def clean_data(self):
-        uploaded_data = self.cleaned_data['data']
-        if uploaded_data.content_type == 'text/plain':
-            data_raw = uploaded_data.read().decode()
-            return data_raw.split('\n')
-        elif uploaded_data.content_type == 'text/csv':
-            data_raw = pd.read_csv(uploaded_data, encoding='CP949', header=None)
-            data = []
-            for post in data_raw[0]:
-                data.append(post)
-            return data
-        else:
-            self.fields['data'].widget.attrs['class'] += ' is-invalid'
-            raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
-
-    class Meta:
-        abstract = True
-
-
-class SnaForm(forms.Form):
+class SnaInteractiveForm(forms.Form):
     layouts = (
         ('fr', 'Fruchterman Reingold'),
         ('fa2', 'ForceAtlas2'),
@@ -47,6 +13,11 @@ class SnaForm(forms.Form):
         (35, 'Small (35)'),
         (60, 'Regular (60)'),
         (100, 'Large (100)'),
+    )
+    theme_list = (
+        ('default', 'Default'),
+        ('light', 'Light'),
+        ('dark', 'Dark'),
     )
     data = forms.CharField(
         required=False,
@@ -67,6 +38,7 @@ class SnaForm(forms.Form):
         initial=35,
         help_text='Number of nodes',
     )
+    theme = forms.ChoiceField(required=True, choices=theme_list, initial='default', )
     edge_remove_threshold = forms.IntegerField(
         required=True,
         label='Edge Remove Threshold',
@@ -183,21 +155,35 @@ class SnaForm(forms.Form):
         return fa2_log_base
 
 
-class SnaInteractiveForm(SnaForm):
-    theme_list = (
-        ('default', 'Default'),
-        ('light', 'Light'),
-        ('dark', 'Dark'),
+class SnaInteractiveFileForm(SnaInteractiveForm):
+    data = forms.FileField(
+        required=True,
+        label='Data',
+        widget=forms.FileInput(
+            attrs={
+                'class': 'custom-file-input',
+                'id': 'datafile',
+                'aria-describedby': 'data-addon',
+            }
+        ),
+        help_text='txt, csv files are supported. '
+                  'One post must be entered per line(row).',
     )
-    theme = forms.ChoiceField(required=True, choices=theme_list, initial='default',)
 
-
-class SnaFileForm(SnaUploadedFileCleanMixin, SnaForm):
-    pass
-
-
-class SnaInteractiveFileForm(SnaUploadedFileCleanMixin, SnaInteractiveForm):
-    pass
+    def clean_data(self):
+        uploaded_data = self.cleaned_data['data']
+        if uploaded_data.content_type == 'text/plain':
+            data_raw = uploaded_data.read().decode()
+            return data_raw.split('\n')
+        elif uploaded_data.content_type == 'text/csv':
+            data_raw = pd.read_csv(uploaded_data, encoding='CP949', header=None)
+            data = []
+            for post in data_raw[0]:
+                data.append(post)
+            return data
+        else:
+            self.fields['data'].widget.attrs['class'] += ' is-invalid'
+            raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
 
 
 class WcForm(forms.Form):

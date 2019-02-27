@@ -32,28 +32,6 @@ def sna_interactive(request):
     return render(request, 'viz/default/sna_interactive-config.html', {'form': form})
 
 
-def sna(request):
-    if request.method == 'POST':
-        form = forms.SnaForm(request.POST)
-        if form.is_valid():
-            options = form.cleaned_data
-            value_error, footer_sticky = False, True
-
-            try:
-                make_sna_png(**options)
-            except(ValueError, KeyError):
-                value_error, footer_sticky = True, False
-
-            context = {
-                'value_error': value_error,
-                'footer_sticky': footer_sticky,
-            }
-            return render(request, 'viz/show_result/sna.html', context)
-    else:
-        form = forms.SnaForm()
-    return render(request, 'viz/default/sna-config.html', {'form': form})
-
-
 def wc(request):
     if request.method == 'POST':
         form = forms.WcForm(request.POST, request.FILES)
@@ -104,29 +82,6 @@ def sna_interactive_file(request):
     return render(request, 'viz/file/sna_interactive-config.html', {'form': form})
 
 
-def sna_file(request):
-    if request.method == 'POST':
-        form = forms.SnaFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            options = form.cleaned_data
-            value_error, footer_sticky = False, True
-
-            try:
-                make_sna_png(**options)
-            except(ValueError, KeyError):
-                value_error, footer_sticky = True, False
-
-            context = {
-                'value_error': value_error,
-                'footer_sticky': footer_sticky,
-                'mode_file': True,
-            }
-            return render(request, 'viz/show_result/sna.html', context)
-    else:
-        form = forms.SnaFileForm()
-    return render(request, 'viz/file/sna-config.html', {'form': form})
-
-
 def wc_file(request):
     if request.method == 'POST':
         form = forms.WcFileForm(request.POST, request.FILES)
@@ -154,13 +109,6 @@ def wc_file(request):
 def get_gexf(request):
     result = open(os.path.join(settings.ROOT_DIR, '.viz_raw/sna_gexf.gexf')).read()
     return HttpResponse(result, content_type='text/xml')
-
-
-def sna_result(request):
-    result = Image.open(os.path.join(settings.ROOT_DIR, '.viz_raw/sna.png'))
-    response = HttpResponse(content_type="image/png")
-    result.save(response, 'png')
-    return response
 
 
 def wc_result(request):

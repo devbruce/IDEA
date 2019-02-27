@@ -6,7 +6,6 @@ import os
 import re
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import networkx as nx
 import community
 import xml.etree.ElementTree as ET
@@ -16,7 +15,6 @@ __all__ = [
     'get_matrix',
     'get_sub_data',
     'write_gexf',
-    'write_png',
 ]
 
 
@@ -211,19 +209,3 @@ def write_gexf(graph):
     # Modify original gexf file
     ET.dump(doc)
     doc.write(os.path.join(settings.ROOT_DIR, '.viz_raw/sna_gexf.gexf'), encoding='utf-8', xml_declaration=True)
-
-
-def write_png(graph, options):
-    """Save SNA image file (``/.viz_raw/sna.png``)
-
-    :param networkx.classes.graph.Graph graph:
-    :param dict options:
-    :return: none
-
-    """
-    plt.figure(figsize=(90, 45), dpi=36)
-    nx.draw_networkx(graph, **options)
-    nx.draw_networkx_labels(graph, options.get('pos'), font_family='DOSGothic', font_size=40)
-    plt.axis('off')
-    plt.savefig(os.path.join(settings.ROOT_DIR, '.viz_raw/sna.png'), bbox_inches='tight')
-    plt.close()
