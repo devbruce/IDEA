@@ -39,6 +39,9 @@
                     };
                     node.category = node.attributes.modularity_class;
                 });
+                graph.links.forEach(function (link) {
+                    link.value = link.width;
+                });
                 option = {
                     title: {
                         text: 'IDEA With ECharts - Les Miserables',
