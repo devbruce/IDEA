@@ -201,12 +201,6 @@ def write_gexf(graph):
     for tag in root.iter('{http://www.gexf.net/1.2draft}attvalue'):
         tag.attrib['for'] = 'modularity_class'
 
-    # Add edge weight (Add adjusted edge weight at gexf file)
-    edge_weight_max = max([graph[u][v]['weight'] for u, v in graph.edges])
-    for edge in root.iter('{http://www.gexf.net/1.2draft}edge'):
-        edge.append(ET.Element('viz:thickness'))
-        edge.find('viz:thickness').attrib['value'] = str((int(edge.attrib['weight']) * 40 / edge_weight_max))
-
     # Modify original gexf file
     ET.dump(doc)
     doc.write(os.path.join(settings.ROOT_DIR, '.viz_raw/sna_gexf.gexf'), encoding='utf-8', xml_declaration=True)

@@ -54,6 +54,7 @@ def make_sna_gexf(
     sub_G = sub_data.get('sub_graph')
     tf_sum_dict_sorted = sub_data.get('tf_sum_dict_sorted')
 
+    # ------ Set Attributes for gexf file ------ #
     # Add Node Weight
     scaled_weight_list = []
     for s in tf_sum_dict_sorted[:node_num]:
@@ -66,6 +67,11 @@ def make_sna_gexf(
 
     for node in scaled_weight_dict:
         sub_G.nodes[node]['viz'] = {'size': scaled_weight_dict[node]}
+
+    # Add edge weight
+    edge_weight_max = max([sub_G[u][v]['weight'] for u, v in sub_G.edges])
+    for u, v in sub_G.edges:
+        sub_G[u][v]['viz'] = {'thickness': sub_G[u][v]['weight'] * 35 / edge_weight_max}
 
     # ------ Set Layout ------ #
     # Fruchterman Reingold
