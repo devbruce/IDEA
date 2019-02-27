@@ -97,7 +97,8 @@ Then click Visualization button!
 
 ## History
 
-[![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)  
+[![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)
 
 See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 

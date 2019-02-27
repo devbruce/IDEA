@@ -1,6 +1,7 @@
 # History
 
-[![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)  
+[![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)
 
 ## v1.0
 
@@ -15,3 +16,15 @@
 - Add Validation
 
 - Add Detail Configuration: Minimum Word Length
+
+<br>
+
+## v1.2
+
+- Add edge weight on SNA Interactive
+
+- Upgrade community feature of SNA Interactive
+
+- Modify initial value of config pages
+
+- Remove SNA (Simple Image)
