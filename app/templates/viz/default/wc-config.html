@@ -9,6 +9,9 @@
 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <div class="container-fluid">
         {{ form.data }}
+        {% for error in form.data.errors %}
+        <small class="form-text text-danger text-center mb-3">{{ error }}</small>
+        {% endfor %}
         <button class="btn btn-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#detail-config" aria-expanded="false" aria-controls="detail-config">Detail Configuration</button>
         <div class="collapse" id="detail-config">
             <div class="card card-body mt-1">

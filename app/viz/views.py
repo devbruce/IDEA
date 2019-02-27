@@ -38,8 +38,6 @@ def wc(request):
         form = forms.WcForm(request.POST, request.FILES)
         if form.is_valid():
             options = form.cleaned_data
-            if not options['data']:
-                options['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
             value_error, footer_sticky = False, True
 
             try:
@@ -75,7 +73,6 @@ def sna_interactive_file(request):
                 'theme': theme,
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
-                'mode_file': True,
                 'partition_data': partition_data,
             }
             return render(request, 'viz/show_result/sna_interactive.html', context)
@@ -99,7 +96,6 @@ def wc_file(request):
             context = {
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
-                'mode_file': True,
             }
             return render(request, 'viz/show_result/wc.html', context)
     else:

@@ -111,7 +111,10 @@ class SnaInteractiveForm(forms.Form):
     )
 
     def clean_data(self):
-        return self.cleaned_data['data'] or open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
+        try:
+            return self.cleaned_data['data'] or open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
+        except FileNotFoundError:
+            raise forms.ValidationError("Sample Data is not exists")
 
     def clean_node_num(self):
         node_num = self.cleaned_data['node_num']
@@ -197,7 +200,7 @@ class WcForm(forms.Form):
         label='Data Input Box',
         widget=forms.Textarea(
             attrs={
-                'class': 'form-control data-box mb-3',
+                'class': 'form-control data-box mb-1',
                 'placeholder': 'Put your data here. If you try to visualize with blank,'
                                'sample data is automatically entered.'
             }
@@ -258,6 +261,12 @@ class WcForm(forms.Form):
         initial=False,
         help_text='Brings the color of the mask intact. Default : OFF',
     )
+
+    def clean_data(self):
+        try:
+            return self.cleaned_data['data'] or open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
+        except FileNotFoundError:
+            raise forms.ValidationError("Sample Data is not exists")
 
     def clean_word_len_min(self):
         word_len_min = self.cleaned_data['word_len_min']

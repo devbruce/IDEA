@@ -8,6 +8,9 @@
 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <div class="container-fluid">
         {{ form.data }}
+        {% for error in form.data.errors %}
+        <small class="form-text text-danger text-center mb-1">{{ error }}</small>
+        {% endfor %}
         <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
 
         <div class="row">
