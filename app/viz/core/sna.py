@@ -59,7 +59,7 @@ def make_sna_gexf(
     for s in tf_sum_dict_sorted[:node_num]:
         if s[1] == -1: continue  # If Node Weight == -1 (It means that this node is a isolated node), then do nothing
         else:
-            scaled_weight = (s[1] * (40**2) / tf_sum_dict_sorted[0][1])**(1/2)
+            scaled_weight = (s[1] * (70 ** 2) / tf_sum_dict_sorted[0][1])**(1/2)
             scaled_weight_list.append((s[0], scaled_weight))
 
     scaled_weight_dict = dict(scaled_weight_list)

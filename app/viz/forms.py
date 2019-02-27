@@ -38,7 +38,7 @@ class SnaInteractiveForm(forms.Form):
         initial=35,
         help_text='Number of nodes',
     )
-    theme = forms.ChoiceField(required=True, choices=theme_list, initial='default', )
+    theme = forms.ChoiceField(required=True, choices=theme_list, initial='light', )
     edge_remove_threshold = forms.IntegerField(
         required=True,
         label='Edge Remove Threshold',
@@ -78,7 +78,7 @@ class SnaInteractiveForm(forms.Form):
     )
     iterations = forms.IntegerField(
         required=True,
-        initial=50,
+        initial=100,
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control'
@@ -89,7 +89,7 @@ class SnaInteractiveForm(forms.Form):
     fr_k = forms.IntegerField(
         required=True,
         label='Variable k',
-        initial=0,
+        initial=1,
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control mb-1'
