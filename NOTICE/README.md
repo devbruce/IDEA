@@ -126,8 +126,8 @@ its OTF and BDF suffix name. (e.g. DOSMyungjo OTF)
 
 - License : Apache License v2.0
 
-> Download File (graph.html) of [ECharts - Les Miserables](http://www.echartsjs.com/examples/editor.html?c=graph) is modified to [sna_interactive.html](https://github.com/DevBruce/IDEA/blob/master/app/templates/viz/result/sna_interactive.html)  
-> (Located at `/app/templates/viz/result/sna_interactive.html`)
+> Download File (graph.html) of [ECharts - Les Miserables](http://www.echartsjs.com/examples/editor.html?c=graph) is modified to [sna_interactive.html](https://github.com/DevBruce/IDEA/blob/master/app/templates/viz/show_result/sna_interactive.html)  
+> (Located at `/app/templates/viz/show_result/sna_interactive.html`)
 
 <br><br>
 
