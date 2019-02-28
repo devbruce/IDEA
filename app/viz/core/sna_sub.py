@@ -160,6 +160,11 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
             sub_nodes.append(node_data[0])
 
     sub_graph = graph.subgraph(sub_nodes)
+
+    # Exception Handling : If No Edges or No Nodes
+    if not sub_graph.edges or not sub_graph.nodes:
+        raise ValueError()
+
     result = {
         'sub_graph': sub_graph,
         'tf_sum_dict': tf_sum_dict,

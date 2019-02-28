@@ -25,8 +25,9 @@ def sna_interactive(request):
                 'theme': theme,
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
-                'partition_data': partition_data,
             }
+            if not value_error:
+                context['partition_data'] = partition_data
             return render(request, 'viz/show_result/sna_interactive.html', context)
     else:
         form = forms.SnaInteractiveForm()
@@ -73,8 +74,9 @@ def sna_interactive_file(request):
                 'theme': theme,
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
-                'partition_data': partition_data,
             }
+            if not value_error:
+                context['partition_data'] = partition_data
             return render(request, 'viz/show_result/sna_interactive.html', context)
     else:
         form = forms.SnaInteractiveFileForm()
