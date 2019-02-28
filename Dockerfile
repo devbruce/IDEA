@@ -1,7 +1,7 @@
 FROM devbruce/idea:nginx-uwsgi-mecabko
 
 # Set Env
-ENV DJANGO_SETTINGS_MODULE config.settings.deploy
+ENV DJANGO_SETTINGS_MODULE config.settings.deploy_simple
 
 # Copy IDEA files to container
 COPY . /srv/IDEA
