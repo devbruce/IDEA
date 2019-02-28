@@ -74,6 +74,7 @@ def sna_interactive_file(request):
                 'theme': theme,
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
+                'mode_file': True,
             }
             if not value_error:
                 context['partition_data'] = partition_data
@@ -98,6 +99,7 @@ def wc_file(request):
             context = {
                 'value_error': value_error,
                 'footer_sticky': footer_sticky,
+                'mode_file': True,
             }
             return render(request, 'viz/show_result/wc.html', context)
     else:

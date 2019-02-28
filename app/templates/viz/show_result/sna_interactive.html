@@ -6,7 +6,7 @@
 {% if not value_error %}
 
 <div id="container" style="height: 100%; margin: 0;"></div>
-<a href="{% if mode_file %}{% url 'viz:sna_interactive_file' %}{% else %}{% url 'viz:sna_interactive' %}{% endif %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
+<a href="{% if mode_file %}{% url 'viz:sna-interactive-file' %}{% else %}{% url 'viz:sna-interactive' %}{% endif %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
 <script src="{% static 'js/echarts/echarts.min.js' %}"></script>
 <script src="{% static 'js/echarts/dataTool.min.js' %}"></script>
 <script>
@@ -22,7 +22,7 @@
         myChart.showLoading();
         $.ajax({
             type: "GET",
-            url: "{% url 'viz:get_gexf' %}",
+            url: "{% url 'viz:get-gexf' %}",
             dataType: "xml",
             success: function (xml) {
                 myChart.hideLoading();

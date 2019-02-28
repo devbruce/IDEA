@@ -28,3 +28,9 @@
 - Modify initial value of config pages
 
 - Remove SNA (Simple Image)
+
+<br>
+
+## v1.21
+
+- Stabilization
