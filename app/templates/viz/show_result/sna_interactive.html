@@ -26,7 +26,6 @@
             dataType: "xml",
             success: function (xml) {
                 myChart.hideLoading();
-
                 var graph = echarts.dataTool.gexf.parse(xml);
                 var categories = [];
                 for (var i = 0; i < partition_len; i++) {
@@ -97,12 +96,11 @@
                     }
                     ]
                 };
-
                 myChart.setOption(option);
             }});
             if (option && typeof option === "object") {
                 myChart.setOption(option, true);
-            }
+            };
         </script>
 
 {% else %}

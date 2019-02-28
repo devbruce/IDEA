@@ -1,53 +1,14 @@
 # Reference
 
-## AWS
-
-- Link : <https://aws.amazon.com/>
-
-- © 2018, Amazon Web Services, Inc. or its affiliates. All rights reserved.
-
-<br>
-
-## Docker
-
-- Link : <https://www.docker.com/>
-
-- © 2018 Docker Inc. All rights reserved
-
-- License : Apache License v2.0
-
-<br>
-
-## Nginx
-
-- Link : <http://nginx.org/>
-
-- Copyright (C) 2002-2018 Igor Sysoev  
-Copyright (C) 2011-2018 Nginx, Inc.  
-All rights reserved.
-
-- License : BSD License (BSD-2-Clause)
-
-<br>
-
-## PostgreSQL
-
-- Link : <https://www.postgresql.org/>
-
-- Portions Copyright © 1996-2018, The PostgreSQL Global Development Group  
-Portions Copyright © 1994, The Regents of the University of California
-
-- License : PostgreSQL License < [Link](https://www.postgresql.org/about/licence/) >
-
-<br>
-
-## Bootstrap (Installed with CDN)
+## Bootstrap
 
 - Link : <https://getbootstrap.com/>
 
 - Copyright (c) 2011-2018 Twitter, Inc.
 
 - License : MIT License
+
+> Installed with CDN
 
 <br>
 
@@ -418,10 +379,9 @@ All rights reserved.
 
 - <https://hashedin.com/blog/5-gotchas-with-elastic-beanstalk-and-django/>  
 
-The following code has been added to **deploy.py** ([app/config/settings/deploy.py](https://github.com/DevBruce/IDEA/blob/master/app/config/settings/deploy.py))  
+The following code has been added to `deploy.py` and `deploy_simple.py`  
 
 ```python
-# app/config/settings/deploy.py
 def is_ec2_linux():
     """
     Detect if we are running on an EC2 Linux Instance
@@ -456,3 +416,7 @@ private_ip = get_linux_ec2_private_ip()
 if private_ip:
     ALLOWED_HOSTS.append(private_ip)
 ```
+
+- `deploy.py`: [app/config/settings/deploy.py](https://github.com/DevBruce/IDEA/blob/master/app/config/settings/deploy.py)
+
+- `deploy_simple.py`: [app/config/settings/deploy_simple.py](https://github.com/DevBruce/IDEA/blob/master/app/config/settings/deploy_simple.py)
