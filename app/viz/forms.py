@@ -149,7 +149,7 @@ class SnaForm(forms.Form):
                     data.append(post)
                 return data
             else:
-                self.fields['data'].widget.attrs['class'] += ' is-invalid'
+                self.fields['data_file'].widget.attrs['class'] += ' is-invalid'
                 raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
         else:
             return None
@@ -204,7 +204,7 @@ class SnaForm(forms.Form):
 
     def clean(self):
         data = self.cleaned_data.pop('data')
-        data_file = self.cleaned_data.pop('data_file')
+        data_file = self.cleaned_data.pop('data_file') if 'data_file' in self.cleaned_data else None
         if not data and not data_file:  # Both are empty
             try:
                 self.cleaned_data['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
@@ -316,7 +316,7 @@ class WcForm(forms.Form):
                     data += post
                 return data
             else:
-                self.fields['data'].widget.attrs['class'] += ' is-invalid'
+                self.fields['data_file'].widget.attrs['class'] += ' is-invalid'
                 raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
         else:
             return None
@@ -354,7 +354,7 @@ class WcForm(forms.Form):
 
     def clean(self):
         data = self.cleaned_data.pop('data')
-        data_file = self.cleaned_data.pop('data_file')
+        data_file = self.cleaned_data.pop('data_file') if 'data_file' in self.cleaned_data else None
         if not data and not data_file:  # Both are empty
             try:
                 self.cleaned_data['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
