@@ -116,8 +116,8 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 <a href="https://github.com/DevBruce/IDEA/blob/master/preview/home.png">
 <img src="https://github.com/DevBruce/IDEA/blob/master/preview/home.png" width="400">
 </a>
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/config_page.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/config_page.png" width="400">
+<a href="https://github.com/DevBruce/IDEA/blob/master/preview/config.png">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/config.png" width="400">
 </a>
 </div>
 

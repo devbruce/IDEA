@@ -209,7 +209,7 @@ class SnaForm(forms.Form):
             try:
                 self.cleaned_data['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
             except FileNotFoundError:
-                raise forms.ValidationError('Sample Data is not exists')
+                raise forms.ValidationError('Sample data does not exists')
         elif data and data_file:  # Both are entered
             if type(data_file) == list:  # if data_file is csv
                 self.cleaned_data['data'] = data.split('\n') + data_file
@@ -359,7 +359,7 @@ class WcForm(forms.Form):
             try:
                 self.cleaned_data['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
             except FileNotFoundError:
-                raise forms.ValidationError('Sample Data is not exists')
+                raise forms.ValidationError('Sample data does not exists')
         elif data and data_file:  # Both are entered
             if type(data_file) == list:  # if data_file is csv
                 self.cleaned_data['data'] = data.split('\n') + data_file
