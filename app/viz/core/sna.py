@@ -19,7 +19,8 @@ def gen_gexf_and_pass_partition_data(
         layout='fr',
         iterations=50,
         fr_k=None,
-        fa2_square=2, fa2_log_base=100
+        fa2_square=2,
+        fa2_log_base=100,
 ):
     """Generate gexf file for SNA Interactive and Pass partition data
 

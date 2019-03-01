@@ -57,11 +57,11 @@
     <div class="row">
 
         <div class="col">
-            <button class="btn btn-lg btn-primary dropdown-toggle mt-3 mb-3" type="button" data-toggle="collapse" data-target="#mode-default" aria-expanded="false" aria-controls="mode-default">Select Visualization Mode</button>
+            <button class="btn btn-lg btn-primary dropdown-toggle my-3" type="button" data-toggle="collapse" data-target="#mode-default" aria-expanded="false" aria-controls="mode-default">Select Visualization Mode</button>
             <div class="collapse" id="mode-default">
-                <div class="card card-body bg-light mb-3">
-                    <a class="btn btn-lg btn-outline-dark mb-3" href="{% url 'viz:sna-interactive' %}"><h5 class="set-inline">Semantic Network Analysis</h5> <span class="badge badge-pill badge-danger">Interactive</span></a>
-                    <a class="btn btn-lg btn-outline-dark" href="{% url 'viz:wc' %}"><h5 class="set-inline">Word Cloud</h5> <span class="badge badge-pill badge-warning">Simple Image</span></a>
+                <div class="card card-body bg-light mb-3 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                    <a class="btn btn-lg btn-outline-dark mb-3" href="{% url 'viz:sna' %}"><h5 class="set-inline">Semantic Network Analysis</h5> <span class="badge badge-pill badge-danger">Interactive</span></a>
+                    <a class="btn btn-lg btn-outline-info" href="{% url 'viz:wc' %}"><h5 class="set-inline">Word Cloud</h5></a>
                 </div>
             </div>
         </div>
@@ -73,7 +73,6 @@
 <div class="prevent-overlap"></div>
 
 {% endblock %}
-
 
 <div class="{% if footer_sticky %}sticky-bottom{% else %}fixed-bottom{% endif %}">
     <div class="container-fluid bg-dark">

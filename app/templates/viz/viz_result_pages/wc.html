@@ -1,12 +1,11 @@
 {% extends 'index.html' %}
-{% load viz_results %}
 
 {% block content %}
 
 {% if not value_error %}
 
 <div class="text-center">
-    <img src="{% url 'index' %}{% viz 'wc.png' %}" alt="WC Result Image">
+    <img src="{% url 'viz:get-wc-png' %}" alt="WordCloud Image">
 </div>
 <a href="{% url 'viz:wc' %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
 

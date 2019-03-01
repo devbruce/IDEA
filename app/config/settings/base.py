@@ -36,7 +36,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_DIR, 'media')
 
 # Viz Result
-VIZ_URL = 'viz-results'
 VIZ_DIR = os.path.join(BASE_DIR, 'viz/viz_results')
 
 # Template

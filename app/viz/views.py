@@ -1,12 +1,16 @@
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.conf import settings
 from . import forms
 from .core.sna import *
 from .core.wc import *
+from PIL import Image
+import os
 
 
-def sna_interactive(request):
+def sna(request):
     if request.method == 'POST':
-        form = forms.SnaInteractiveForm(request.POST, request.FILES)
+        form = forms.SnaForm(request.POST, request.FILES)
         if form.is_valid():
             options = form.cleaned_data
             theme = options.pop('theme')
@@ -24,10 +28,10 @@ def sna_interactive(request):
             }
             if not value_error:
                 context['partition_data'] = partition_data
-            return render(request, 'viz/viz_result_pages/sna_interactive.html', context)
+            return render(request, 'viz/viz_result_pages/sna.html', context)
     else:
-        form = forms.SnaInteractiveForm()
-    return render(request, 'viz/viz_configs/sna_interactive.html', {'form': form})
+        form = forms.SnaForm()
+    return render(request, 'viz/viz_configs/sna.html', {'form': form})
 
 
 def wc(request):
@@ -50,3 +54,16 @@ def wc(request):
     else:
         form = forms.WcForm()
     return render(request, 'viz/viz_configs/wc.html', {'form': form})
+
+
+# -- Get Result Files --#
+def get_sna_gexf(request):
+    result = open(os.path.join(settings.VIZ_DIR, 'sna.gexf')).read()
+    return HttpResponse(result, content_type='text/xml')
+
+
+def get_wc_png(request):
+    result = Image.open(os.path.join(settings.VIZ_DIR, 'wc.png'))
+    response = HttpResponse(content_type="image/png")
+    result.save(response, 'png')
+    return response

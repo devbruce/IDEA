@@ -123,13 +123,13 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 
 <br><br>
 
-- **Semantic Network Analysis (Interactive)** / **Word Cloud (Simple Image)**
+- **Semantic Network Analysis (Interactive)** / **Word Cloud**
 
 <br>
 
 <div align="center">
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/sna_interactive.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/sna_interactive.png" width="400">
+<a href="https://github.com/DevBruce/IDEA/blob/master/preview/sna.png">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/sna.png" width="400">
 </a>
 <a href="https://github.com/DevBruce/IDEA/blob/master/preview/wc.png">
 <img src="https://github.com/DevBruce/IDEA/blob/master/preview/wc.png" width="400">

@@ -1,13 +1,12 @@
 {% extends 'index.html' %}
 {% load static %}
-{% load viz_results %}
 
 {% block content %}
 
 {% if not value_error %}
 
 <div id="container" style="height: 100%; margin: 0;"></div>
-<a href="{% url 'viz:sna-interactive' %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
+<a href="{% url 'viz:sna' %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
 <script src="{% static 'js/echarts/echarts.min.js' %}"></script>
 <script src="{% static 'js/echarts/dataTool.min.js' %}"></script>
 <script>
@@ -23,7 +22,7 @@
         myChart.showLoading();
         $.ajax({
             type: "GET",
-            url: "{% url 'index' %}{% viz 'sna.gexf' %}",
+            url: "{% url 'viz:get-sna-gexf' %}",
             dataType: "xml",
             success: function (xml) {
                 myChart.hideLoading();
@@ -114,7 +113,7 @@
                 <p class="mb-2">- The amount of data entered is so small that it can not be analyzed.</p>
                 <p class="mb-2">- The value of Edge Remove Threshold is too high. It should be a reasonable value for the amount of data.</p>
         </div>
-        <a href="{% url 'viz:sna-interactive' %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
+        <a href="{% url 'viz:sna' %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
 </div>
 
 <div class="block-content"></div>

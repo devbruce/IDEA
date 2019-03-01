@@ -16,9 +16,12 @@ __all__ = [
 def gen_wc_png(
         data,
         max_word_size=100,
+        stopwords=None,
         word_len_min=1,
         bg_color='white',
-        mask=None, mask_coloring=True, font=None, stopwords=None
+        mask=None,
+        mask_coloring=True,
+        font=None,
 ):
     """Generate wc png file
 

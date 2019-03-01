@@ -4,7 +4,8 @@ from django import forms
 from django.conf import settings
 
 
-class SnaInteractiveForm(forms.Form):
+class SnaForm(forms.Form):
+    # Choice List
     layouts = (
         ('fr', 'Fruchterman Reingold'),
         ('fa2', 'ForceAtlas2'),
@@ -19,6 +20,7 @@ class SnaInteractiveForm(forms.Form):
         ('light', 'Light'),
         ('dark', 'Dark'),
     )
+    # Fields
     data = forms.CharField(
         required=False,
         label='Data Input',
@@ -94,14 +96,18 @@ class SnaInteractiveForm(forms.Form):
     )
     iterations = forms.IntegerField(
         required=True,
-        initial=60,
+        initial=50,
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control'
             }
         )
     )
-    layout = forms.ChoiceField(required=True, choices=layouts, initial='fr',)
+    layout = forms.ChoiceField(
+        required=True,
+        choices=layouts,
+        initial='fr',
+    )
     fr_k = forms.IntegerField(
         required=True,
         label='Variable k',
@@ -114,7 +120,11 @@ class SnaInteractiveForm(forms.Form):
         help_text='As the value increases, the distance of the node increases. '
                   'Default 0 equals None',
     )
-    fa2_square = forms.IntegerField(required=True, label='Variable Square', initial=2,)
+    fa2_square = forms.IntegerField(
+        required=True,
+        label='Variable Square',
+        initial=2,
+    )
     fa2_log_base = forms.IntegerField(
         required=True,
         label='Variable log(base)',
