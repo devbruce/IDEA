@@ -62,16 +62,13 @@ def get_matrix(corpus, word_len_min, stopwords):
     # -- Make Stop Word List -- #
     if stopwords:
         stopwords = stopwords.replace(' ', '')
-        stopwords_list = stopwords.split(',')
-    else:
-        stopwords_list = None
+        stopwords = stopwords.split(',')
 
     # -- Make Cooccur Matrix -- #
-
     term_vectorizer = CountVectorizer(
         min_df=1,  # Frequency >= 1
         token_pattern=r'\w{%d,}' % word_len_min,
-        stop_words=stopwords_list,
+        stop_words=stopwords,
     )
     term_names = term_vectorizer.fit(corpus).get_feature_names()
     td_matrix = term_vectorizer.fit_transform(corpus)  # Get Term-Document Matrix
