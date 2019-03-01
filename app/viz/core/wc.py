@@ -4,7 +4,7 @@ import re
 import numpy as np
 from konlpy.tag import Mecab
 import matplotlib.pyplot as plt
-from collections import Counter
+from sklearn.feature_extraction.text import CountVectorizer
 from wordcloud import WordCloud, ImageColorGenerator
 from PIL import Image
 
@@ -33,28 +33,26 @@ def gen_wc_png(
     :return: none
 
     """
-    data = re.sub(r'\W', ' ', data)  # Use regular expression for data scailing
-    
     nlp = Mecab('/usr/local/lib/mecab/dic/mecab-ko-dic')  # Make Mecab(NLP) object
-    
-    data_nouns = nlp.nouns(data)  # Extract nouns from data and input it to data_nouns
-    data_nouns_cnt = Counter(data_nouns)  # Count nouns from data_nouns and make it dict type data
+    data = re.sub(r'\W', ' ', data)  # Change Special Characters and blanks (Not words) to ' '(one blank)
+    data_nouns = nlp.nouns(data)  # Extract nouns from data
 
-    # Stop Words Process
+    # -- Make Stop Word List -- #
     if stopwords:
         stopwords = stopwords.replace(' ', '')
-        stopwords_list = stopwords.split(',')
-        for word in stopwords_list:
-            del data_nouns_cnt[word]
+        stopwords = stopwords.split(',')
 
-    # Minimum Word Length Process
-    if word_len_min > 1:
-        word_len_min_del_list = list()
-        for word in data_nouns_cnt:
-            if len(word) < word_len_min:
-                word_len_min_del_list.append(word)
-        for word in word_len_min_del_list:
-            del data_nouns_cnt[word]
+    term_vectorizer = CountVectorizer(
+        min_df=1,  # Frequency >= 1
+        token_pattern=r'\w{%d,}' % word_len_min,
+        stop_words=stopwords,
+    )
+    td_matrix = term_vectorizer.fit_transform(data_nouns)  # Get Term-Document Matrix
+    term_names = term_vectorizer.fit(data_nouns).get_feature_names()
+    tf_sum = td_matrix.toarray().sum(axis=0)
+    tf_sum_dict = {}
+    for i in range(len(term_names)):
+        tf_sum_dict[term_names[i]] = tf_sum[i]
 
     # Set Font
     if font: wc_font = font.temporary_file_path()
@@ -69,7 +67,7 @@ def gen_wc_png(
         background_color=bg_color,
         font_path=wc_font,
         mask=wc_mask,
-    ).generate_from_frequencies(data_nouns_cnt)
+    ).generate_from_frequencies(tf_sum_dict)
 
     if mask_coloring:
         mask_colors = ImageColorGenerator(wc_mask)
