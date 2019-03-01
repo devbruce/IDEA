@@ -8,7 +8,7 @@
 <div class="text-center">
     <img src="{% url 'index' %}{% viz 'wc.png' %}" alt="WC Result Image">
 </div>
-<a href="{% if mode_file %}{% url 'viz:wc-file' %}{% else %}{% url 'viz:wc' %}{% endif %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
+<a href="{% url 'viz:wc' %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
 
 {% else %}
 
@@ -19,7 +19,7 @@
         <hr>
         <p class="mb-2">- The amount of data entered is so small that it can not be analyzed.</p>
     </div>
-    <a href="{% if mode_file %}{% url 'viz:wc-file' %}{% else %}{% url 'viz:wc' %}{% endif %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
+    <a href="{% url 'viz:wc' %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
 </div>
 
 <div class="block-content"></div>

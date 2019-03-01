@@ -16,7 +16,7 @@
 /sample_data.txt
 
 # Result files of Visualization
-/app/viz_results
+/app/viz/viz_results
 
 # Log Files
 /.log

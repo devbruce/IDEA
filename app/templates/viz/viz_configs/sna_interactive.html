@@ -7,25 +7,35 @@
 <h2 class="text-center m-3"><b>Semantic Network Analysis</b> <span class="badge badge-pill badge-danger">Interactive</span></h2>
 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <div class="container-fluid">
-        <br>
-        <div class="text-center">
-            <h3 class="mb-3">Choose Your File To Visualize</h3>
+        <div class="text-center text-muted my-1">* If <b>Data Input</b> and <b>Data File Input</b> are used together, the two contents are combined.</div>
+        <div class="text-center text-muted my-1">* Sample data is automatically entered if <b>Data Input</b> and <b>Data File Input</b> are both empty.</div>
 
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="data-addon">{{ form.data.label }}</span>
-                </div>
-                <div class="custom-file">
-                    {{ form.data }}
-                    <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
-                </div>
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <div class="text-center text-danger my-3">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <b>{{ form.data.label }}</b>
+        {{ form.data }}
+        {% for error in form.data.errors %}
+        <small class="form-text text-danger text-center mb-1">{{ error }}</small>
+        {% endfor %}
+        <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="data-addon">{{ form.data_file.label }}</span>
             </div>
-            {% for error in form.data.errors %}
-            <small class="form-text text-danger">{{ error }}</small>
-            {% endfor %}
-            <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
-
+            <div class="custom-file">
+                {{ form.data_file }}
+                <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
+            </div>
         </div>
+        {% for error in form.data_file.errors %}
+        <small class="form-text text-danger">{{ error }}</small>
+        {% endfor %}
+        <span class="form-text text-muted help_text mb-3">{{ form.data_file.help_text }}</span>
 
         <div class="row">
             <div class="col">
@@ -55,7 +65,7 @@
                             <br>
                             <div class="btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-secondary btn-block active text-light">
-                                    {% render_field form.remove_isolated_node autocomplete="off" %} {{ form.remove_isolated_node.label }}
+                                    {% render_field form.remove_isolated_node autocomplete="off" %}Remove Isolated Node
                                 </label>
                                 <span class="form-text text-muted help_text mb-3">{{ form.remove_isolated_node.help_text }}</span>
                             </div>

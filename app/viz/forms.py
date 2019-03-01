@@ -21,15 +21,27 @@ class SnaInteractiveForm(forms.Form):
     )
     data = forms.CharField(
         required=False,
-        label='Data Input Box',
+        label='Data Input',
         widget=forms.Textarea(
             attrs={
                 'class': 'form-control data-box',
-                'placeholder': "Put your data here. If you try to visualize with blank,"
-                               "sample data is automatically entered.",
+                'placeholder': 'Put your data here.',
             }
         ),
         help_text='One post must be entered per line.'
+    )
+    data_file = forms.FileField(
+        required=False,
+        label='Data File Input',
+        widget=forms.FileInput(
+            attrs={
+                'class': 'custom-file-input',
+                'id': 'datafile',
+                'aria-describedby': 'data-addon',
+            }
+        ),
+        help_text='txt, csv files are supported. '
+                  'One post must be entered per line(row).',
     )
     node_num = forms.ChoiceField(
         required=True,
@@ -38,7 +50,11 @@ class SnaInteractiveForm(forms.Form):
         initial=35,
         help_text='Number of nodes',
     )
-    theme = forms.ChoiceField(required=True, choices=theme_list, initial='light', )
+    theme = forms.ChoiceField(
+        required=True,
+        choices=theme_list,
+        initial='default',
+    )
     edge_remove_threshold = forms.IntegerField(
         required=True,
         label='Edge Remove Threshold',
@@ -110,11 +126,23 @@ class SnaInteractiveForm(forms.Form):
         ),
     )
 
-    def clean_data(self):
-        try:
-            return self.cleaned_data['data'] or open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
-        except FileNotFoundError:
-            raise forms.ValidationError("Sample Data is not exists")
+    def clean_data_file(self):
+        uploaded_data = self.cleaned_data['data_file']
+        if uploaded_data:
+            if uploaded_data.content_type == 'text/plain':
+                data_raw = uploaded_data.read().decode()
+                return data_raw.split('\n')
+            elif uploaded_data.content_type == 'text/csv':
+                data_raw = pd.read_csv(uploaded_data, encoding='CP949', header=None)
+                data = []
+                for post in data_raw[0]:
+                    data.append(post)
+                return data
+            else:
+                self.fields['data'].widget.attrs['class'] += ' is-invalid'
+                raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
+        else:
+            return None
 
     def clean_node_num(self):
         node_num = self.cleaned_data['node_num']
@@ -133,6 +161,13 @@ class SnaInteractiveForm(forms.Form):
             self.fields['word_len_min'].widget.attrs['class'] += ' is-invalid'
             raise forms.ValidationError("Minimum Word Length can't be less than 1")
         return word_len_min
+
+    def clean_stopwords(self):
+        stopwords = self.cleaned_data['stopwords']
+        if not stopwords:
+            return None
+        else:
+            return stopwords
 
     def clean_iterations(self):
         iterations = self.cleaned_data['iterations']
@@ -157,36 +192,22 @@ class SnaInteractiveForm(forms.Form):
             raise forms.ValidationError("Log base value can't be negative or 1")
         return fa2_log_base
 
-
-class SnaInteractiveFileForm(SnaInteractiveForm):
-    data = forms.FileField(
-        required=True,
-        label='Data',
-        widget=forms.FileInput(
-            attrs={
-                'class': 'custom-file-input',
-                'id': 'datafile',
-                'aria-describedby': 'data-addon',
-            }
-        ),
-        help_text='txt, csv files are supported. '
-                  'One post must be entered per line(row).',
-    )
-
-    def clean_data(self):
-        uploaded_data = self.cleaned_data['data']
-        if uploaded_data.content_type == 'text/plain':
-            data_raw = uploaded_data.read().decode()
-            return data_raw.split('\n')
-        elif uploaded_data.content_type == 'text/csv':
-            data_raw = pd.read_csv(uploaded_data, encoding='CP949', header=None)
-            data = []
-            for post in data_raw[0]:
-                data.append(post)
-            return data
+    def clean(self):
+        data = self.cleaned_data.pop('data')
+        data_file = self.cleaned_data.pop('data_file')
+        if not data and not data_file:  # Both are empty
+            try:
+                self.cleaned_data['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
+            except FileNotFoundError:
+                raise forms.ValidationError('Sample Data is not exists')
+        elif data and data_file:  # Both are entered
+            if type(data_file) == list:  # if data_file is csv
+                self.cleaned_data['data'] = data.split('\n') + data_file
+            else:
+                self.cleaned_data['data'] = data + data_file
         else:
-            self.fields['data'].widget.attrs['class'] += ' is-invalid'
-            raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
+            self.cleaned_data['data'] = data or data_file
+        return self.cleaned_data
 
 
 class WcForm(forms.Form):
@@ -197,12 +218,33 @@ class WcForm(forms.Form):
     )
     data = forms.CharField(
         required=False,
-        label='Data Input Box',
+        label='Data Input',
         widget=forms.Textarea(
             attrs={
-                'class': 'form-control data-box mb-1',
-                'placeholder': 'Put your data here. If you try to visualize with blank,'
-                               'sample data is automatically entered.'
+                'class': 'form-control data-box mb-3',
+                'placeholder': 'Put your data here.',
+            }
+        )
+    )
+    data_file = forms.FileField(
+        required=False,
+        label='Data File Input',
+        widget=forms.FileInput(
+            attrs={
+                'class': 'custom-file-input',
+                'id': 'datafile',
+                'aria-describedby': 'data-addon',
+            }
+        ),
+        help_text='txt, csv files are supported.',
+    )
+    word_len_min = forms.IntegerField(
+        required=True,
+        label='Minimum Word Length',
+        initial=2,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control mb-1',
             }
         )
     )
@@ -216,16 +258,6 @@ class WcForm(forms.Form):
         ),
         help_text='Type the words you want to exclude from the results. '
                   '(If there are several, separate them by comma)',
-    )
-    word_len_min = forms.IntegerField(
-        required=True,
-        label='Minimum Word Length',
-        initial=2,
-        widget=forms.NumberInput(
-            attrs={
-                'class': 'form-control mb-1',
-            }
-        )
     )
     max_word_size = forms.IntegerField(
         required=True,
@@ -262,11 +294,22 @@ class WcForm(forms.Form):
         help_text='Brings the color of the mask intact. Default : OFF',
     )
 
-    def clean_data(self):
-        try:
-            return self.cleaned_data['data'] or open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
-        except FileNotFoundError:
-            raise forms.ValidationError("Sample Data is not exists")
+    def clean_data_file(self):
+        uploaded_data = self.cleaned_data['data_file']
+        if uploaded_data:
+            if uploaded_data.content_type == 'text/plain':
+                return uploaded_data.read().decode()
+            elif uploaded_data.content_type == 'text/csv':
+                data_raw = pd.read_csv(uploaded_data, encoding='CP949', header=None)
+                data = ''
+                for post in data_raw[0]:
+                    data += post
+                return data
+            else:
+                self.fields['data'].widget.attrs['class'] += ' is-invalid'
+                raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
+        else:
+            return None
 
     def clean_word_len_min(self):
         word_len_min = self.cleaned_data['word_len_min']
@@ -274,6 +317,20 @@ class WcForm(forms.Form):
             self.fields['word_len_min'].widget.attrs['class'] += ' is-invalid'
             raise forms.ValidationError("Minimum Word Length can't be less than 1")
         return word_len_min
+
+    def clean_stopwords(self):
+        stopwords = self.cleaned_data['stopwords']
+        if not stopwords:
+            return None
+        else:
+            return stopwords
+
+    def clean_max_word_size(self):
+        max_word_size = self.cleaned_data['max_word_size']
+        if max_word_size < 0:
+            self.fields['max_word_size'].widget.attrs['class'] += ' is-invalid'
+            raise forms.ValidationError("Max Word Size can't be negative")
+        return max_word_size
 
     def clean_font(self):
         font_file = self.cleaned_data['font']
@@ -285,38 +342,19 @@ class WcForm(forms.Form):
             raise forms.ValidationError('Uploaded File is not font file. (This file has not font extensions.)')
         return font_file
 
-    def clean_max_word_size(self):
-        max_word_size = self.cleaned_data['max_word_size']
-        if max_word_size < 0:
-            self.fields['max_word_size'].widget.attrs['class'] += ' is-invalid'
-            raise forms.ValidationError("Max Word Size can't be negative")
-        return max_word_size
-
-
-class WcFileForm(WcForm):
-    data = forms.FileField(
-        required=True,
-        label='Data',
-        widget=forms.FileInput(
-            attrs={
-                'class': 'custom-file-input',
-                'id': 'datafile',
-                'aria-describedby': 'data-addon',
-            }
-        ),
-        help_text='txt, csv files are supported.',
-    )
-
-    def clean_data(self):
-        uploaded_data = self.cleaned_data['data']
-        if uploaded_data.content_type == 'text/plain':
-            return uploaded_data.read().decode()
-        elif uploaded_data.content_type == 'text/csv':
-            data_raw = pd.read_csv(uploaded_data, encoding='CP949', header=None)
-            data = ''
-            for post in data_raw[0]:
-                data += post
-            return data
+    def clean(self):
+        data = self.cleaned_data.pop('data')
+        data_file = self.cleaned_data.pop('data_file')
+        if not data and not data_file:  # Both are empty
+            try:
+                self.cleaned_data['data'] = open(os.path.join(settings.ROOT_DIR, 'sample_data.txt'), 'rt').read()
+            except FileNotFoundError:
+                raise forms.ValidationError('Sample Data is not exists')
+        elif data and data_file:  # Both are entered
+            if type(data_file) == list:  # if data_file is csv
+                self.cleaned_data['data'] = data.split('\n') + data_file
+            else:
+                self.cleaned_data['data'] = data + data_file
         else:
-            self.fields['data'].widget.attrs['class'] += ' is-invalid'
-            raise forms.ValidationError("Uploaded File is not *.txt or *.csv")
+            self.cleaned_data['data'] = data or data_file
+        return self.cleaned_data
