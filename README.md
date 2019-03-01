@@ -9,7 +9,9 @@
 ## Intro & Purpose
 
 It is hard for non-developer to visualize data.  
-But if you use IDEA, you can **visualize data easily.**
+But if you use IDEA, you can **visualize data easily.**  
+
+URL: <http://project-idea.pe.kr>  
 
 > Please feel free to provide feedback If `Project: IDEA` have any problems
 
