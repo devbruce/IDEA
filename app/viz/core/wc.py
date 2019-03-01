@@ -9,18 +9,18 @@ from wordcloud import WordCloud, ImageColorGenerator
 from PIL import Image
 
 __all__ = [
-    'make_wc_png',
+    'gen_wc_png',
 ]
 
 
-def make_wc_png(
+def gen_wc_png(
         data,
         max_word_size=100,
         word_len_min=1,
         bg_color='white',
         mask=None, mask_coloring=True, font=None, stopwords=None
 ):
-    """Make and Save wc image file (``/.viz_raw/wc.png``)
+    """Generate wc png file
 
     :param str data:
     :param int max_word_size:
@@ -80,5 +80,8 @@ def make_wc_png(
         plt.imshow(wc, interpolation="bilinear")
 
     plt.axis('off')
-    plt.savefig(os.path.join(settings.ROOT_DIR, '.viz_raw/wc.png'), bbox_inches='tight')
+
+    if not os.path.exists(settings.VIZ_DIR):
+        os.makedirs(settings.VIZ_DIR, exist_ok=True)
+    plt.savefig(os.path.join(settings.VIZ_DIR, 'wc.png'), bbox_inches='tight')
     plt.close()

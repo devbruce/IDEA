@@ -137,7 +137,7 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
         for node in graph.nodes:
             edge_weight_sum=0
             for to in graph[node]:
-                if to in main_network_nodes:  # If edge is realted to main_nodes, add this edge_weight edge_weight_sum
+                if to in main_network_nodes:  # If edge is related to main_nodes, add this edge_weight edge_weight_sum
                     edge_weight_sum += graph[node][to]['weight']
             if edge_weight_sum == 0:
                 isolated_nodes.append(node)
@@ -174,7 +174,7 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
 
 
 def write_gexf(graph):
-    """Save SNA gexf file (``/.viz_raw/sna_gexf.gexf``)
+    """Write SNA gexf file
 
     :param networkx.classes.graph.Graph graph:
     :return: none
@@ -185,7 +185,10 @@ def write_gexf(graph):
     nx.set_node_attributes(graph, partition, 'Modularity_Class')
 
     # Write Original gexf File
-    nx.write_gexf(graph, os.path.join(settings.ROOT_DIR, '.viz_raw/sna_gexf.gexf'), encoding='utf-8', prettyprint=True)
+    if not os.path.exists(settings.VIZ_DIR):
+        os.makedirs(settings.VIZ_DIR, exist_ok=True)
+
+    nx.write_gexf(graph, os.path.join(settings.VIZ_DIR, 'sna.gexf'), encoding='utf-8', prettyprint=True)
 
     # -- Modify original gexf File -- #
 
@@ -193,7 +196,7 @@ def write_gexf(graph):
     ET.register_namespace('', 'http://www.gexf.net/1.2draft')
 
     # Parse gexf file
-    doc = ET.parse(os.path.join(settings.ROOT_DIR, '.viz_raw/sna_gexf.gexf'))
+    doc = ET.parse(os.path.join(settings.VIZ_DIR, 'sna.gexf'))
 
     # get root node
     root = doc.getroot()
@@ -208,4 +211,4 @@ def write_gexf(graph):
 
     # Modify original gexf file
     ET.dump(doc)
-    doc.write(os.path.join(settings.ROOT_DIR, '.viz_raw/sna_gexf.gexf'), encoding='utf-8', xml_declaration=True)
+    doc.write(os.path.join(settings.VIZ_DIR, 'sna.gexf'), encoding='utf-8', xml_declaration=True)

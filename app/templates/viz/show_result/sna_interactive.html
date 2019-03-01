@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load viz_results %}
 
 {% block content %}
 
@@ -22,7 +23,7 @@
         myChart.showLoading();
         $.ajax({
             type: "GET",
-            url: "{% url 'viz:get-gexf' %}",
+            url: "{% url 'index' %}{% viz 'sna.gexf' %}",
             dataType: "xml",
             success: function (xml) {
                 myChart.hideLoading();

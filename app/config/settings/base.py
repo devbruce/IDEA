@@ -13,33 +13,51 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import json
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# Basic Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+# Secret
+SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
+secrets = json.load(open(os.path.join(SECRETS_DIR, 'base.json')))
+SECRET_KEY = secrets['SECRET_KEY']
 
+
+# Static
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(ROOT_DIR, 'staticfiles')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     STATIC_DIR,
 )
 
-STATIC_ROOT = os.path.join(ROOT_DIR, 'staticfiles')
+# Media
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_DIR, 'media')
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+# Viz Result
+VIZ_URL = 'viz-results'
+VIZ_DIR = os.path.join(BASE_DIR, 'viz_results')
 
-SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
-secrets = json.load(open(os.path.join(SECRETS_DIR, 'base.json')))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets['SECRET_KEY']
-
-# Application definition
+# Template
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            TEMPLATES_DIR,
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 INSTALLED_APPS = [
     'viz.apps.VizConfig',
@@ -65,25 +83,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            TEMPLATES_DIR,
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Password validation
@@ -113,11 +112,7 @@ FILE_UPLOAD_HANDLERS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Asia/Seoul'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True

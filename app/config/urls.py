@@ -30,3 +30,7 @@ urlpatterns += static(
     prefix=settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT,
 )
+urlpatterns += static(
+    prefix=settings.VIZ_URL,
+    document_root=settings.VIZ_DIR,
+)
