@@ -6,6 +6,7 @@ from .core.sna import *
 from .core.wc import *
 from PIL import Image
 import os
+import networkx as nx
 
 
 def sna(request):
@@ -14,19 +15,26 @@ def sna(request):
         if form.is_valid():
             options = form.cleaned_data
             theme = options.pop('theme')
-            value_error, footer_sticky = False, True
+            errors, footer_sticky = False, True
+            value_error, memory_error = False, False
 
             try:
                 partition_data = gen_gexf_and_pass_partition_data(**options)
-            except FileNotFoundError:
-                value_error, footer_sticky = True, False
+            except ValueError:
+                errors, footer_sticky = True, False
+                value_error = True
+            except nx.NetworkXError:
+                errors, footer_sticky = True, False
+                memory_error = True
 
             context = {
                 'theme': theme,
-                'value_error': value_error,
+                'errors': errors,
                 'footer_sticky': footer_sticky,
+                'value_error': value_error,
+                'memory_error': memory_error,
             }
-            if not value_error:
+            if not errors:
                 context['partition_data'] = partition_data
             return render(request, 'viz/viz_result_pages/sna.html', context)
     else:
@@ -39,15 +47,15 @@ def wc(request):
         form = forms.WcForm(request.POST, request.FILES)
         if form.is_valid():
             options = form.cleaned_data
-            value_error, footer_sticky = False, True
+            errors, footer_sticky = False, True
 
             try:
                 gen_wc_png(**options)
             except ValueError:
-                value_error, footer_sticky = True, False
+                errors, footer_sticky = True, False
 
             context = {
-                'value_error': value_error,
+                'errors': errors,
                 'footer_sticky': footer_sticky,
             }
             return render(request, 'viz/viz_result_pages/wc.html', context)

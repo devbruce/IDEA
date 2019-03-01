@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{% if not value_error %}
+{% if not errors %}
 
 <div id="container" style="height: 100%; margin: 0;"></div>
 <a href="{% url 'viz:sna' %}" class="btn btn-info btn-lg btn-block border-radius-0">Back To Configuration</a>
@@ -110,8 +110,14 @@
                 <h3 class="alert-heading">Data Error</h3>
                 <p>If you see this page, it will be in one of the following cases.</p>
                 <hr>
+                {% if value_error %}
                 <p class="mb-2">- The amount of data entered is so small that it can not be analyzed.</p>
                 <p class="mb-2">- The value of Edge Remove Threshold is too high. It should be a reasonable value for the amount of data.</p>
+                {% endif %}
+
+                {% if memory_error %}
+                <p class="mb-2">- The amount of data entered is too big so that it raised MemoryError.</p>
+                {% endif %}
         </div>
         <a href="{% url 'viz:sna' %}" class="btn btn-danger btn-lg btn-block">Back To Configuration</a>
 </div>
