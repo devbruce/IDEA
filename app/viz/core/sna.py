@@ -11,10 +11,10 @@ __all__ = [
 
 def gen_gexf_and_pass_partition_data(
         data,
+        stopwords=None,
+        word_len_min=2,
         node_num=30,
         edge_remove_threshold=0,
-        word_len_min=2,
-        stopwords=None,
         remove_isolated_node=True,
         layout='fr',
         iterations=50,
@@ -25,10 +25,10 @@ def gen_gexf_and_pass_partition_data(
     """Generate gexf file for SNA Interactive and Pass partition data
 
     :param str,list data: String Data (One post per line) | List Data (One post per element)
+    :param str stopwords: Stopwords separated ','
+    :param int word_len_min:
     :param int node_num: Number of nodes
     :param int edge_remove_threshold:
-    :param int word_len_min:
-    :param str stopwords: Stopwords separated ','
     :param bool remove_isolated_node:
     :param str layout:
     :param int iterations:
@@ -40,7 +40,7 @@ def gen_gexf_and_pass_partition_data(
     """
 
     corpus = get_corpus(data=data)
-    matrix = get_matrix(corpus=corpus, word_len_min=word_len_min, stopwords=stopwords)
+    matrix = get_matrix(corpus=corpus, stopwords=stopwords, word_len_min=word_len_min)
     cooccur_matrix = matrix.get('cooccur_matrix')
 
     # Get Graph
@@ -52,7 +52,7 @@ def gen_gexf_and_pass_partition_data(
         node_num=node_num,
         edge_remove_threshold=edge_remove_threshold,
         remove_isolated_node=remove_isolated_node,
-        matrix=matrix
+        matrix=matrix,
     )
     sub_graph = sub_data.get('sub_graph')
     tf_sum_dict_sorted = sub_data.get('tf_sum_dict_sorted')

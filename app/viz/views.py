@@ -1,17 +1,18 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
-from . import forms
+from .forms.sna import SnaForm
+from .forms.wc import WcForm
 from .core.sna import *
 from .core.wc import *
 from PIL import Image
-import os
 import networkx as nx
+import os
 
 
 def sna(request):
     if request.method == 'POST':
-        form = forms.SnaForm(request.POST, request.FILES)
+        form = SnaForm(request.POST, request.FILES)
         if form.is_valid():
             options = form.cleaned_data
             theme = options.pop('theme')
@@ -38,13 +39,13 @@ def sna(request):
                 context['partition_data'] = partition_data
             return render(request, 'viz/viz_result_pages/sna.html', context)
     else:
-        form = forms.SnaForm()
+        form = SnaForm()
     return render(request, 'viz/viz_configs/sna.html', {'form': form})
 
 
 def wc(request):
     if request.method == 'POST':
-        form = forms.WcForm(request.POST, request.FILES)
+        form = WcForm(request.POST, request.FILES)
         if form.is_valid():
             options = form.cleaned_data
             errors, footer_sticky = False, True
@@ -60,18 +61,24 @@ def wc(request):
             }
             return render(request, 'viz/viz_result_pages/wc.html', context)
     else:
-        form = forms.WcForm()
+        form = WcForm()
     return render(request, 'viz/viz_configs/wc.html', {'form': form})
 
 
-# -- Get Result Files --#
+# -- Get Result File Views --#
 def get_sna_gexf(request):
-    result = open(os.path.join(settings.VIZ_DIR, 'sna.gexf')).read()
+    try:
+        result = open(os.path.join(settings.VIZ_DIR, 'sna.gexf')).read()
+    except FileNotFoundError:
+        return redirect('index')
     return HttpResponse(result, content_type='text/xml')
 
 
 def get_wc_png(request):
-    result = Image.open(os.path.join(settings.VIZ_DIR, 'wc.png'))
-    response = HttpResponse(content_type="image/png")
+    try:
+        result = Image.open(os.path.join(settings.VIZ_DIR, 'wc.png'))
+    except FileNotFoundError:
+        return redirect('index')
+    response = HttpResponse(content_type='image/png')
     result.save(response, 'png')
     return response

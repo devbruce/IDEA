@@ -21,7 +21,7 @@
         {% for error in form.data.errors %}
         <small class="form-text text-danger text-center mb-1">{{ error }}</small>
         {% endfor %}
-        <span class="form-text text-muted help_text mb-3">{{ form.data.help_text }}</span>
+        <span class="form-text text-muted help_text mb-3">One post must be entered per line.</span>
 
         <div class="input-group">
             <div class="input-group-prepend">
@@ -35,7 +35,8 @@
         {% for error in form.data_file.errors %}
         <small class="form-text text-danger">{{ error }}</small>
         {% endfor %}
-        <span class="form-text text-muted help_text mb-3">{{ form.data_file.help_text }}</span>
+        <div class="form-text text-muted help_text">{{ form.data_file.help_text }}</div>
+        <div class="form-text text-muted help_text mb-3">One post must be entered per line (row).</div>
 
         <div class="row">
             <div class="col">
@@ -135,7 +136,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-lg btn-block btn-primary mt-2 mb-2"><b>Visualization</b></button>
+        <button type="submit" class="btn btn-lg btn-block btn-primary my-3"><b>Visualization</b></button>
 
     </div>
 </form>

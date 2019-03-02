@@ -44,12 +44,12 @@ def get_corpus(data):
     return corpus
 
 
-def get_matrix(corpus, word_len_min, stopwords):
+def get_matrix(corpus, stopwords, word_len_min):
     """Make data related to matrix
 
     :param numpy.ndarray corpus: corpus data made by ``core.sna_sub.get_corpus``
-    :param int word_len_min:
     :param str stopwords: Stopwords separated ','
+    :param int word_len_min:
     :return: dict
 
     **Keys of returned dict**
