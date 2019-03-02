@@ -44,17 +44,17 @@ def gen_gexf_and_pass_partition_data(
     cooccur_matrix = matrix.get('cooccur_matrix')
 
     # Get Graph
-    G = nx.from_pandas_adjacency(cooccur_matrix)
+    graph = nx.from_pandas_adjacency(cooccur_matrix)
 
     # Get Sub Data
     sub_data = get_sub_data(
-        graph=G,
+        graph=graph,
         node_num=node_num,
         edge_remove_threshold=edge_remove_threshold,
         remove_isolated_node=remove_isolated_node,
         matrix=matrix
     )
-    sub_G = sub_data.get('sub_graph')
+    sub_graph = sub_data.get('sub_graph')
     tf_sum_dict_sorted = sub_data.get('tf_sum_dict_sorted')
 
     # ------ Set Attributes for gexf file ------ #
@@ -69,24 +69,24 @@ def gen_gexf_and_pass_partition_data(
     scaled_weight_dict = dict(scaled_weight_list)
 
     for node in scaled_weight_dict:
-        sub_G.nodes[node]['viz'] = {'size': scaled_weight_dict[node]}
+        sub_graph.nodes[node]['viz'] = {'size': scaled_weight_dict[node]}
 
     # Add edge weight
-    edge_weight_max = max([sub_G[u][v]['weight'] for u, v in sub_G.edges])
-    for u, v in sub_G.edges:
-        sub_G[u][v]['viz'] = {'thickness': sub_G[u][v]['weight'] * 35 / edge_weight_max}
+    edge_weight_max = max([sub_graph[u][v]['weight'] for u, v in sub_graph.edges])
+    for u, v in sub_graph.edges:
+        sub_graph[u][v]['viz'] = {'thickness': sub_graph[u][v]['weight'] * 35 / edge_weight_max}
 
     # ------ Set Layout ------ #
     # Fruchterman Reingold
     if layout == "fr":
-        pos = nx.spring_layout(sub_G, k=fr_k, iterations=iterations)
+        pos = nx.spring_layout(sub_graph, k=fr_k, iterations=iterations)
         for node in pos:
-            sub_G.nodes[node]['viz']['position'] = {'x': pos[node][0], 'y': pos[node][1]}
+            sub_graph.nodes[node]['viz']['position'] = {'x': pos[node][0], 'y': pos[node][1]}
         
     # ForceAtlas2
     elif layout == "fa2":
         forceatlas2 = ForceAtlas2()
-        pos = forceatlas2.forceatlas2_networkx_layout(sub_G, iterations=iterations)
+        pos = forceatlas2.forceatlas2_networkx_layout(sub_graph, iterations=iterations)
 
         for node in pos:
             raw_x, raw_y = pos[node]
@@ -95,14 +95,14 @@ def gen_gexf_and_pass_partition_data(
             if raw_x < 0: adj_x *= -1
             if raw_y < 0: adj_y *= -1
             # ----------------- #
-            sub_G.nodes[node]['viz']['position'] = {'x': adj_x, 'y': adj_y}
+            sub_graph.nodes[node]['viz']['position'] = {'x': adj_x, 'y': adj_y}
     # -------------------------- #
 
     # Generate gexf file
-    write_gexf(graph=sub_G)
+    write_gexf(graph=sub_graph)
 
     # ------ Pass partition data to template ------ #
-    partition = community.best_partition(sub_G)
+    partition = community.best_partition(sub_graph)
     partition_len = max(partition.values()) + 1
     node_freq_per_klass = {n: list() for n in range(partition_len)}
     for node, klass in partition.items():

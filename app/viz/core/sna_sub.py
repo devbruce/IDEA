@@ -123,7 +123,7 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
     for i in range(len(term_names)):
         tf_sum_dict[term_names[i]] = tf_sum[i]
 
-    # Get Top Frequency Nodes to make sub_G
+    # Get Top Frequency Nodes to make sub_graph
     tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
 
     # -- Process : Remove Isolated Node -- #
@@ -134,7 +134,7 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
         for node in graph.nodes:
             edge_weight_sum=0
             for to in graph[node]:
-                if to in main_network_nodes:  # If edge is related to main_nodes, add this edge_weight edge_weight_sum
+                if to in main_network_nodes:  # If edge is related to main_nodes, add its edge_weight edge_weight_sum
                     edge_weight_sum += graph[node][to]['weight']
             if edge_weight_sum == 0:
                 isolated_nodes.append(node)
