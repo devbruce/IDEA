@@ -34,3 +34,11 @@
 ## v1.21
 
 - Stabilization
+
+<br>
+
+## v1.3
+
+- Combine Two Modes (Self Input & Data Input)
+
+- Stabilization & Optimization

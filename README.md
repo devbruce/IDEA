@@ -114,10 +114,10 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 
 <div align="center">
 <a href="https://github.com/DevBruce/IDEA/blob/master/preview/home.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/home.png" width="400">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/home.png" width="400" height="240">
 </a>
 <a href="https://github.com/DevBruce/IDEA/blob/master/preview/config.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/config.png" width="400">
+<img src="https://github.com/DevBruce/IDEA/blob/master/preview/config.png" width="400" height="240">
 </a>
 </div>
 
