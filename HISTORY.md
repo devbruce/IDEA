@@ -42,3 +42,15 @@
 - Combine Two Modes (Self Input & Data Input)
 
 - Stabilization & Optimization
+
+<br>
+
+## v1.31
+
+- Convert viz.forms to package (Separated)
+
+- Modify result file views
+  - Add exception handling
+  - Change urls
+
+- Stabilization & Optimization
