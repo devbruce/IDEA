@@ -1,9 +1,9 @@
 from django import forms
-from .basic import VizBasicForm
+from .base import VizBaseForm
 import pandas as pd
 
 
-class SnaForm(VizBasicForm):
+class SnaForm(VizBaseForm):
     network_size = (
         (35, 'Small (35)'),
         (60, 'Regular (60)'),

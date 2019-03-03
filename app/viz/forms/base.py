@@ -3,7 +3,7 @@ from django.conf import settings
 import os
 
 
-class VizBasicForm(forms.Form):
+class VizBaseForm(forms.Form):
     data = forms.CharField(
         required=False,
         label='Data Input',

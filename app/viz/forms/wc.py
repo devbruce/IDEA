@@ -1,9 +1,9 @@
 from django import forms
-from .basic import VizBasicForm
+from .base import VizBaseForm
 import pandas as pd
 
 
-class WcForm(VizBasicForm):
+class WcForm(VizBaseForm):
     bg_colors = (
         ('white', 'White'),
         ('black', 'Black'),
