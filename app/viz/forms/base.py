@@ -11,7 +11,7 @@ class VizBaseForm(forms.Form):
             attrs={
                 'class': 'form-control data-box',
                 'placeholder': 'Put your data here.',
-            }
+            },
         ),
     )
     data_file = forms.FileField(
@@ -22,7 +22,7 @@ class VizBaseForm(forms.Form):
                 'class': 'custom-file-input',
                 'id': 'datafile',
                 'aria-describedby': 'data-addon',
-            }
+            },
         ),
         help_text='txt, csv files are supported.',
     )
@@ -32,7 +32,7 @@ class VizBaseForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'placeholder': 'ex) Word1,Word2,Word3',
-            }
+            },
         ),
         help_text='Type the words you want to exclude from the results. '
                   '(If there are several, separate them by comma)',
@@ -44,8 +44,8 @@ class VizBaseForm(forms.Form):
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control mb-1',
-            }
-        )
+            },
+        ),
     )
 
     def clean_stopwords(self):

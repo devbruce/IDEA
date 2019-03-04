@@ -67,11 +67,11 @@ def wc(request):
 
 # -- Get Result File Views --#
 def get_sna_gexf(request):
-    try:
+    if request.is_ajax():
         result = open(os.path.join(settings.VIZ_DIR, 'sna.gexf')).read()
-    except FileNotFoundError:
+        return HttpResponse(result, content_type='text/xml')
+    else:
         return redirect('index')
-    return HttpResponse(result, content_type='text/xml')
 
 
 def get_wc_png(request):

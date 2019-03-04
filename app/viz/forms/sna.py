@@ -15,19 +15,29 @@ class SnaForm(VizBaseForm):
         ('dark', 'Dark'),
     )
     layouts = (
-        ('fr', 'Fruchterman Reingold'),
+        ('fr', 'Fruchterman Reingold (Spring Layout)'),
         ('fa2', 'ForceAtlas2'),
     )
     theme = forms.ChoiceField(
         required=True,
         choices=theme_list,
         initial='default',
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control mb-3',
+            },
+        ),
     )
     node_num = forms.ChoiceField(
         required=True,
         label='Network Size',
         choices=network_size,
         initial=35,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control mb-1',
+            },
+        ),
         help_text='Number of nodes',
     )
     edge_remove_threshold = forms.IntegerField(
@@ -37,7 +47,7 @@ class SnaForm(VizBaseForm):
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control mb-1',
-            }
+            },
         ),
     )
     remove_isolated_node = forms.BooleanField(
@@ -52,30 +62,40 @@ class SnaForm(VizBaseForm):
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control'
-            }
-        )
+            },
+        ),
     )
     layout = forms.ChoiceField(
         required=True,
         choices=layouts,
         initial='fr',
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control mb-3',
+            },
+        ),
     )
-    fr_k = forms.IntegerField(
+    fr_k = forms.FloatField(
         required=True,
-        label='Variable k',
-        initial=1,
+        label='Argument k',
+        initial=1.0,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1'
-            }
+                'class': 'form-control mb-1',
+                'step': 'any',
+            },
         ),
-        help_text='As the value increases, the distance of the node increases. '
-                  'Default 0 equals None',
+        help_text='Optimal distance between nodes.',
     )
     fa2_square = forms.IntegerField(
         required=True,
         label='Variable Square',
         initial=2,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control mb-3',
+            },
+        ),
     )
     fa2_log_base = forms.IntegerField(
         required=True,
@@ -83,8 +103,8 @@ class SnaForm(VizBaseForm):
         initial=100,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1'
-            }
+                'class': 'form-control mb-3',
+            },
         ),
     )
 

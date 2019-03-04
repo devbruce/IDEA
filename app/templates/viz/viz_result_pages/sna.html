@@ -21,7 +21,7 @@
         option = null;
         myChart.showLoading();
         $.ajax({
-            type: "GET",
+            method: "GET",
             url: "{% url 'viz:get-sna-gexf' %}",
             dataType: "xml",
             success: function (xml) {

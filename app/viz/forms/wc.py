@@ -13,14 +13,23 @@ class WcForm(VizBaseForm):
         required=True,
         label='Max Word Size',
         initial=100,
-        widget=forms.TextInput(attrs={'class': 'form-control mb-1'}),
-        help_text='Specify the most frequent word size.'
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control mb-1'
+            },
+        ),
+        help_text='Specify the most frequent word size.',
     )
     bg_color = forms.ChoiceField(
         required=True,
         label='Background Color',
         choices=bg_colors,
         initial='white',
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control mb-3',
+            },
+        ),
     )
     font = forms.FileField(
         required=False,
@@ -29,7 +38,7 @@ class WcForm(VizBaseForm):
                 'class': 'custom-file-input',
                 'id': 'fontfile',
                 'aria-describedby': 'fontfile-addon',
-            }
+            },
         ),
         help_text='Default Font is DOSGothic',)
     mask = forms.ImageField(
@@ -41,7 +50,7 @@ class WcForm(VizBaseForm):
         required=False,
         label='Mask Coloring',
         initial=False,
-        help_text='Brings the color of the mask intact. Default : OFF',
+        help_text='Brings the color of the mask intact. (Default : OFF)',
     )
 
     def clean_data_file(self):
