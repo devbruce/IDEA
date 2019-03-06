@@ -130,13 +130,15 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
     if remove_isolated_node:
         # Make Remove Isolated Nodes List
         isolated_nodes = list()
-        main_network_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
-        for node in graph.nodes:
-            edge_weight_sum=0
-            for to in graph[node]:
-                if to in main_network_nodes:  # If edge is related to main_nodes, add its edge_weight edge_weight_sum
-                    edge_weight_sum += graph[node][to]['weight']
-            if edge_weight_sum == 0:
+        sub_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
+        for node in sub_nodes:
+            have_edge = False
+            for related_node in graph[node]:  # graph[node] returns {'to_node': {'weight: n }, . . . }
+                if related_node in sub_nodes:  # If related_node is in sub_nodes, Convert have_edge False to True
+                    if have_edge:
+                        break
+                    have_edge = True
+            if not have_edge:
                 isolated_nodes.append(node)
 
         # Make temp_dict for setting isolated node weight -1
@@ -149,7 +151,7 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
     # ------------------------------------- #
 
     # Make Sub Graph
-    sub_nodes = []
+    sub_nodes = list()
     for node_data in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
         if node_data[1] == -1:  # If Node Weight == -1 (It means that this node is a isolated node)
             continue
