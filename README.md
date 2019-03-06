@@ -72,7 +72,7 @@ backend : Agg
 
 ### Set Environment Variable
 
-There are three separate settings.py. It is recommended that you use files for local.(`local.py`)  
+There are four separate settings.py. It is recommended that you use files for local.(`local.py`)  
 Set the environment variable through the code below and run the server.  
 
 ```bash
