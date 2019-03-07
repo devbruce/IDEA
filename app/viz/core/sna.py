@@ -56,15 +56,18 @@ def gen_gexf_and_pass_partition_data(
     )
     sub_graph = sub_data.get('sub_graph')
     tf_sum_dict_sorted = sub_data.get('tf_sum_dict_sorted')
+    isolated_nodes = sub_data.get('isolated_nodes')
 
     # ------ Set Attributes for gexf file ------ #
     # Add Node Weight
     scaled_weight_list = []
-    for s in tf_sum_dict_sorted[:node_num]:
-        if s[1] == -1: continue  # If Node Weight == -1 (It means that this node is a isolated node), then do nothing
+    for node_freq in tf_sum_dict_sorted[:node_num]:
+        # node_freq[0] is node, node_freq[1] is node's frequency
+        if node_freq[0] in isolated_nodes:
+            continue
         else:
-            scaled_weight = (s[1] * (70 ** 2) / tf_sum_dict_sorted[0][1])**(1/2)
-            scaled_weight_list.append((s[0], scaled_weight))
+            scaled_weight = (node_freq[1] * (70 ** 2) / tf_sum_dict_sorted[0][1])**(1/2)
+            scaled_weight_list.append((node_freq[0], scaled_weight))
 
     scaled_weight_dict = dict(scaled_weight_list)
 

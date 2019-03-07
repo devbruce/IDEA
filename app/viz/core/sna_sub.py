@@ -125,12 +125,11 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
 
     # Get Top Frequency Nodes to make sub_graph
     tf_sum_dict_sorted = sorted(tf_sum_dict.items(), key=lambda x: x[1], reverse=True)
+    sub_nodes = [node_freq[0] for node_freq in tf_sum_dict_sorted[:node_num]]
 
     # -- Process : Remove Isolated Node -- #
+    isolated_nodes = list()
     if remove_isolated_node:
-        # Make Remove Isolated Nodes List
-        isolated_nodes = list()
-        sub_nodes = [i[0] for i in tf_sum_dict_sorted[:node_num]]
         for node in sub_nodes:
             have_edge = False
             for related_node in graph[node]:  # graph[node] returns {'to_node': {'weight: n }, . . . }
@@ -141,23 +140,12 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
             if not have_edge:
                 isolated_nodes.append(node)
 
-        # Make temp_dict for setting isolated node weight -1
-        temp_dict = OrderedDict(tf_sum_dict_sorted)
-
-        # Set Isolated nodes' weight -1
+        # Remove isolated node from sub node list
         for node in isolated_nodes:
-            temp_dict[node] = -1
-        tf_sum_dict_sorted = list(temp_dict.items())
+            sub_nodes.remove(node)
     # ------------------------------------- #
 
     # Make Sub Graph
-    sub_nodes = list()
-    for node_data in tf_sum_dict_sorted[:node_num]:  # Set the Number of Nodes
-        if node_data[1] == -1:  # If Node Weight == -1 (It means that this node is a isolated node)
-            continue
-        else:
-            sub_nodes.append(node_data[0])
-
     sub_graph = graph.subgraph(sub_nodes)
 
     # Exception Handling : If No Edges or No Nodes
@@ -168,6 +156,7 @@ def get_sub_data(graph, node_num, edge_remove_threshold, remove_isolated_node, m
         'sub_graph': sub_graph,
         'tf_sum_dict': tf_sum_dict,
         'tf_sum_dict_sorted': tf_sum_dict_sorted,
+        'isolated_nodes': isolated_nodes,
     }
     return result
 

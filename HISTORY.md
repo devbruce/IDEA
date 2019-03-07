@@ -54,3 +54,9 @@
   - Change urls
 
 - Stabilization & Optimization
+
+<br>
+
+## v1.32
+
+- Stabilization & Optimization
