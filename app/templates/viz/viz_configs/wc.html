@@ -13,58 +13,69 @@
 
         {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
-        <div class="text-center text-danger my-3">{{ error }}</div>
+        <div class="text-center text-danger">{{ error }}</div>
         {% endfor %}
         {% endif %}
 
-        <b>{{ form.data.label }}</b>
-        {{ form.data }}
-        {% for error in form.data.errors %}
-        <small class="form-text text-danger text-center mb-3">{{ error }}</small>
-        {% endfor %}
-
-        <div class="input-group mt-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="data-addon">{{ form.data_file.label }}</span>
-            </div>
-            <div class="custom-file">
-                {{ form.data_file }}
-                <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
-            </div>
+        <div class="mb-3">
+            <b>{{ form.data.label }}</b>
+            {{ form.data }}
+            {% for error in form.data.errors %}
+            <small class="form-text text-danger text-center">{{ error }}</small>
+            {% endfor %}
         </div>
-        {% for error in form.data_file.errors %}
-        <small class="form-text text-danger">{{ error }}</small>
-        {% endfor %}
-        <span class="form-text text-muted help_text mb-3">{{ form.data_file.help_text }}</span>
+
+        <div class="mb-3">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="data-addon">{{ form.data_file.label }}</span>
+                </div>
+                <div class="custom-file">
+                    {{ form.data_file }}
+                    <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
+                </div>
+            </div>
+            <span class="form-text text-muted help_text">{{ form.data_file.help_text }}</span>
+            {% for error in form.data_file.errors %}
+            <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
 
         <button class="btn btn-outline-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#detail-config" aria-expanded="false" aria-controls="detail-config"><b>Detail Configuration</b></button>
         <div class="collapse" id="detail-config">
-            <div class="card card-body mt-1">
+            <div class="card card-body">
 
                 <div class="container-fluid">
-                    <b>{{ form.max_word_size.label }}</b> {{ form.max_word_size }}
-                    <span class="form-text text-muted help_text mb-1">{{ form.max_word_size.help_text }}</span>
-                    {% for error in form.max_word_size.errors %}
-                    <small class="form-text text-danger mb-3">{{ error }}</small>
-                    {% endfor %}
 
-                    <b>{{ form.bg_color.label }}</b> {{ form.bg_color }}
-
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="fontfile-addon">{{ form.font.label }}</span>
-                        </div>
-                        <div class="custom-file">
-                            {{ form.font }}
-                            <label class="custom-file-label" for="fontfile">Choose Font File (*.ttf, *.otf)</label>
-                        </div>
+                    <div class="mb-3">
+                        <b>{{ form.max_word_size.label }}</b> {{ form.max_word_size }}
+                        <span class="form-text text-muted help_text">{{ form.max_word_size.help_text }}</span>
+                        {% for error in form.max_word_size.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                        {% endfor %}
                     </div>
-                    {% for error in form.font.errors %}
-                    <small class="form-text text-danger mb-3">{{ error }}</small>
-                    {% endfor %}
-                    <span class="form-text text-muted help_text mb-3">{{ form.font.help_text }}</span>
 
-                    <div class="row">
+                    <div class="mb-3">
+                        <b>{{ form.bg_color.label }}</b> {{ form.bg_color }}
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="fontfile-addon">{{ form.font.label }}</span>
+                            </div>
+                            <div class="custom-file">
+                                {{ form.font }}
+                                <label class="custom-file-label" for="fontfile">Choose Font File (*.ttf, *.otf)</label>
+                            </div>
+                        </div>
+                        <span class="form-text text-muted help_text">{{ form.font.help_text }}</span>
+                        {% for error in form.font.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="row mb-3">
 
                         <div class="col">
                             <div class="input-group">
@@ -76,7 +87,7 @@
                                     <label class="custom-file-label" for="maskfile">Choose Image File</label>
                                 </div>
                             </div>
-                            <span class="form-text text-muted help_text mb-3">{{ form.mask.help_text }}</span>
+                            <span class="form-text text-muted help_text">{{ form.mask.help_text }}</span>
                         </div>
 
                         <div class="col">
@@ -84,7 +95,7 @@
                                 <label class="btn btn-secondary btn-block text-light">
                                     {% render_field form.mask_coloring autocomplete="off" %} {{ form.mask_coloring.label }}
                                 </label>
-                                <span class="form-text text-muted help_text mb-3">{{ form.mask_coloring.help_text }}</span>
+                                <span class="form-text text-muted help_text">{{ form.mask_coloring.help_text }}</span>
                             </div>
                         </div>
 
@@ -94,13 +105,13 @@
 
                         <div class="col">
                             <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
-                            <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+                            <span class="form-text text-muted help_text">{{ form.stopwords.help_text }}</span>
                         </div>
 
                         <div class="col">
                             <b>{{ form.word_len_min.label }}</b> {{ form.word_len_min }}
                             {% for error in form.word_len_min.errors %}
-                            <small class="form-text text-danger mb-3">{{ error }}</small>
+                            <small class="form-text text-danger">{{ error }}</small>
                             {% endfor %}
                         </div>
 

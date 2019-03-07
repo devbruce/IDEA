@@ -15,7 +15,7 @@ class WcForm(VizBaseForm):
         initial=100,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1'
+                'class': 'form-control'
             },
         ),
         help_text='Specify the most frequent word size.',
@@ -27,7 +27,7 @@ class WcForm(VizBaseForm):
         initial='white',
         widget=forms.Select(
             attrs={
-                'class': 'form-control mb-3',
+                'class': 'form-control',
             },
         ),
     )

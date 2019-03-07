@@ -4,11 +4,6 @@ import pandas as pd
 
 
 class SnaForm(VizBaseForm):
-    network_size = (
-        (35, 'Small (35)'),
-        (60, 'Regular (60)'),
-        (100, 'Large (100)'),
-    )
     theme_list = (
         ('default', 'Default'),
         ('light', 'Light'),
@@ -24,21 +19,20 @@ class SnaForm(VizBaseForm):
         initial='default',
         widget=forms.Select(
             attrs={
-                'class': 'form-control mb-3',
+                'class': 'form-control',
             },
         ),
     )
-    node_num = forms.ChoiceField(
+    node_num = forms.IntegerField(
         required=True,
-        label='Network Size',
-        choices=network_size,
+        label='Number Of Nodes',
         initial=35,
-        widget=forms.Select(
+        widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1',
+                'class': 'form-control',
             },
         ),
-        help_text='Number of nodes',
+        help_text='The number of nodes in the result may be reduced if Remove Isolated Node is ON',
     )
     edge_remove_threshold = forms.IntegerField(
         required=True,
@@ -46,7 +40,7 @@ class SnaForm(VizBaseForm):
         initial=0,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1',
+                'class': 'form-control',
             },
         ),
     )
@@ -71,21 +65,21 @@ class SnaForm(VizBaseForm):
         initial='fr',
         widget=forms.Select(
             attrs={
-                'class': 'form-control mb-3',
+                'class': 'form-control',
             },
         ),
     )
     fr_k = forms.FloatField(
         required=True,
-        label='Argument k',
-        initial=1.0,
+        label='Argument k (Float)',
+        initial=0,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1',
+                'class': 'form-control',
                 'step': 'any',
             },
         ),
-        help_text='Optimal distance between nodes.',
+        help_text='Optimal distance between nodes. 0 equals None',
     )
     fa2_square = forms.IntegerField(
         required=True,
@@ -93,7 +87,7 @@ class SnaForm(VizBaseForm):
         initial=2,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-3',
+                'class': 'form-control',
             },
         ),
     )
@@ -103,7 +97,7 @@ class SnaForm(VizBaseForm):
         initial=100,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-3',
+                'class': 'form-control',
             },
         ),
     )
@@ -128,7 +122,10 @@ class SnaForm(VizBaseForm):
 
     def clean_node_num(self):
         node_num = self.cleaned_data['node_num']
-        return int(node_num)
+        if node_num < 1:
+            self.fields['node_num'].widget.attrs['class'] += ' is-invalid'
+            raise forms.ValidationError("Number of nodes can't be less than 1")
+        return node_num
 
     def clean_edge_remove_threshold(self):
         edge_remove_threshold = self.cleaned_data['edge_remove_threshold']

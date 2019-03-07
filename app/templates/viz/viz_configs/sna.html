@@ -16,45 +16,52 @@
         {% endfor %}
         {% endif %}
 
-        <b>{{ form.data.label }}</b>
-        {{ form.data }}
-        {% for error in form.data.errors %}
-        <small class="form-text text-danger text-center mb-1">{{ error }}</small>
-        {% endfor %}
-        <span class="form-text text-muted help_text mb-3">One post must be entered per line.</span>
-
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="data-addon">{{ form.data_file.label }}</span>
-            </div>
-            <div class="custom-file">
-                {{ form.data_file }}
-                <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
-            </div>
+        <div class="mb-3">
+            <b>{{ form.data.label }}</b>
+            {{ form.data }}
+            <span class="form-text text-muted help_text">One post must be entered per line.</span>
+            {% for error in form.data.errors %}
+            <small class="form-text text-danger text-center">{{ error }}</small>
+            {% endfor %}
         </div>
-        {% for error in form.data_file.errors %}
-        <small class="form-text text-danger">{{ error }}</small>
-        {% endfor %}
-        <div class="form-text text-muted help_text">{{ form.data_file.help_text }}</div>
-        <div class="form-text text-muted help_text mb-3">One post must be entered per line (row).</div>
 
-        <div class="row">
+        <div class="mb-3">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="data-addon">{{ form.data_file.label }}</span>
+                </div>
+                <div class="custom-file">
+                    {{ form.data_file }}
+                    <label class="custom-file-label" for="datafile">Choose File (*.txt, *.csv)</label>
+                </div>
+            </div>
+            <div class="form-text text-muted help_text">{{ form.data_file.help_text }}</div>
+            <div class="form-text text-muted help_text">One post must be entered per line (row).</div>
+            {% for error in form.data_file.errors %}
+            <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <div class="row mb-3">
             <div class="col">
                 <b>{{ form.node_num.label }}</b> {{ form.node_num }}
-                <span class="form-text text-muted help_text mb-3">{{ form.node_num.help_text }}</span>
+                <span class="form-text text-muted help_text">{{ form.node_num.help_text }}</span>
+                {% for error in form.node_num.errors %}
+                <small class="form-text text-danger">{{ error }}</small>
+                {% endfor %}
             </div>
             <div class="col">
-                <b>{{ form.theme.label }}</b> {% render_field form.theme class="form-control mb-3" %}
+                <b>{{ form.theme.label }}</b> {{ form.theme }}
             </div>
         </div>
 
         <button class="btn btn-outline-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#detail-config" aria-expanded="false" aria-controls="detail-config"><b>Detail Configuration</b></button>
         <div class="collapse" id="detail-config">
-            <div class="card card-body mt-1">
+            <div class="card card-body">
 
                 <div class="container-fluid">
 
-                    <div class="row">
+                    <div class="row mb-3">
 
                         <div class="col">
                             <b>{{ form.edge_remove_threshold.label }}</b> {{ form.edge_remove_threshold }}
@@ -68,62 +75,66 @@
                                 <label class="btn btn-secondary btn-block active text-light">
                                     {% render_field form.remove_isolated_node autocomplete="off" %}Remove Isolated Node
                                 </label>
-                                <span class="form-text text-muted help_text mb-3">{{ form.remove_isolated_node.help_text }}</span>
+                                <span class="form-text text-muted help_text">{{ form.remove_isolated_node.help_text }}</span>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="row">
+                    <div class="row mb-3">
 
                         <div class="col">
                             <b>{{ form.stopwords.label }}</b> {{ form.stopwords }}
-                            <span class="form-text text-muted help_text mb-3">{{ form.stopwords.help_text }}</span>
+                            <span class="form-text text-muted help_text">{{ form.stopwords.help_text }}</span>
                         </div>
 
                         <div class="col">
                             <b>{{ form.word_len_min.label }}</b> {{ form.word_len_min }}
                             {% for error in form.word_len_min.errors %}
-                            <small class="form-text text-danger mb-3">{{ error }}</small>
+                            <small class="form-text text-danger">{{ error }}</small>
                             {% endfor %}
                         </div>
 
                     </div>
 
-                    <b>{{ form.iterations.label }}</b> {{ form.iterations }}
-                    {% for error in form.iterations.errors %}
-                    <small class="form-text text-danger mb-3">{{ error }}</small>
-                    {% endfor %}
+                    <div class="mb-3">
+                        <b>{{ form.iterations.label }}</b> {{ form.iterations }}
+                        {% for error in form.iterations.errors %}
+                        <small class="form-text text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
 
-                    <div class="mt-3"><b>{{ form.layout.label }}</b></div> {{ form.layout }}
+                    <div class="mb-3">
+                        <b>{{ form.layout.label }}</b> {{ form.layout }}
+                    </div>
 
                     <div class="row">
 
                         <div class="col">
-                            <button class="btn btn-outline-info btn-block dropdown-toggle mb-3" type="button" data-toggle="collapse" data-target="#fr-config" aria-expanded="false" aria-controls="fr-config">Layout: Fruchterman Reingold Config</button>
+                            <button class="btn btn-outline-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#fr-config" aria-expanded="false" aria-controls="fr-config">Layout: Fruchterman Reingold Config</button>
                             <div class="collapse" id="fr-config">
-                                <div class="card card-body mb-3">
+                                <div class="card card-body">
                                     <div class="container-fluid">
                                         <b>{{ form.fr_k.label }}</b> {{ form.fr_k }}
+                                        <span class="form-text text-muted help_text">{{ form.fr_k.help_text }}</span>
+                                        <a href="https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.drawing.layout.spring_layout.html" target="_blank"><small class="form-text">See Detail Explanation</small></a>
                                         {% for error in form.fr_k.errors %}
-                                        <small class="form-text text-danger mb-1">{{ error }}</small>
+                                        <small class="form-text text-danger">{{ error }}</small>
                                         {% endfor %}
-                                        <span class="form-text text-muted help_text mb-1">{{ form.fr_k.help_text }}</span>
-                                        <a href="https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.drawing.layout.spring_layout.html" target="_blank"><small class="form-text mb-3">See Detail Explanation</small></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col">
-                            <button class="btn btn-outline-info btn-block dropdown-toggle mb-3" type="button" data-toggle="collapse" data-target="#fa2-config" aria-expanded="false" aria-controls="fa2-config">Layout: ForceAtlas2 Config</button>
+                            <button class="btn btn-outline-info btn-block dropdown-toggle" type="button" data-toggle="collapse" data-target="#fa2-config" aria-expanded="false" aria-controls="fa2-config">Layout: ForceAtlas2 Config</button>
                             <div class="collapse" id="fa2-config">
-                                <div class="card card-body mb-3">
+                                <div class="card card-body">
                                     <div class="container-fluid">
                                         <b>{{ form.fa2_square.label }}</b> {{ form.fa2_square }}
                                         <b>{{ form.fa2_log_base.label }}</b> {{ form.fa2_log_base }}
                                         {% for error in form.fa2_log_base.errors %}
-                                        <small class="form-text text-danger mb-1">{{ error }}</small>
+                                        <small class="form-text text-danger">{{ error }}</small>
                                         {% endfor %}
                                     </div>
                                 </div>

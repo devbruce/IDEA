@@ -43,7 +43,7 @@ class VizBaseForm(forms.Form):
         initial=2,
         widget=forms.NumberInput(
             attrs={
-                'class': 'form-control mb-1',
+                'class': 'form-control',
             },
         ),
     )

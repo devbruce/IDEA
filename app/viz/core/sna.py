@@ -61,13 +61,12 @@ def gen_gexf_and_pass_partition_data(
     # ------ Set Attributes for gexf file ------ #
     # Add Node Weight
     scaled_weight_list = []
-    for node_freq in tf_sum_dict_sorted[:node_num]:
-        # node_freq[0] is node, node_freq[1] is node's frequency
-        if node_freq[0] in isolated_nodes:
+    for node, freq in tf_sum_dict_sorted[:node_num]:
+        if node in isolated_nodes:
             continue
         else:
-            scaled_weight = (node_freq[1] * (70 ** 2) / tf_sum_dict_sorted[0][1])**(1/2)
-            scaled_weight_list.append((node_freq[0], scaled_weight))
+            scaled_weight = (freq * (70 ** 2) / tf_sum_dict_sorted[0][1])**(1/2)
+            scaled_weight_list.append((node, scaled_weight))
 
     scaled_weight_dict = dict(scaled_weight_list)
 
