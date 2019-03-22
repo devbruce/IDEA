@@ -22,7 +22,7 @@
         myChart.showLoading();
         $.ajax({
             method: "GET",
-            url: "{% url 'viz:get-sna-gexf' %}",
+            url: "{% url 'viz:get_sna_gexf' %}",
             dataType: "xml",
             success: function (xml) {
                 myChart.hideLoading();

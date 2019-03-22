@@ -1,7 +1,6 @@
 from django.conf import settings
 from konlpy.tag import Mecab
 from sklearn.feature_extraction.text import CountVectorizer
-from collections import OrderedDict
 import os
 import re
 import pandas as pd

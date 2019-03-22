@@ -5,7 +5,7 @@ app_name = 'viz'
 
 urlpatterns = [
     path('sna/', views.sna, name='sna'),
-    path('get-sna-gexf/', views.get_sna_gexf, name='get-sna-gexf'),
+    path('get-sna-gexf/', views.get_sna_gexf, name='get_sna_gexf'),
     path('wc/', views.wc, name='wc'),
-    path('get-wc-png/', views.get_wc_png, name='get-wc-png'),
+    path('get-wc-png/', views.get_wc_png, name='get_wc_png'),
 ]
