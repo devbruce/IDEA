@@ -40,7 +40,7 @@ class WcForm(VizBaseForm):
                 'aria-describedby': 'fontfile-addon',
             },
         ),
-        help_text='Default Font is DOSGothic',)
+    )
     mask = forms.ImageField(
         required=False,
         label='Mask Image',

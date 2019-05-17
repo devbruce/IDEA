@@ -115,7 +115,9 @@
                             <div class="collapse" id="fr-config">
                                 <div class="card card-body">
                                     <div class="container-fluid">
-                                        <b>{{ form.fr_k.label }}</b> {{ form.fr_k }}
+                                        <div class="mb-3">
+                                            <b>{{ form.fr_k.label }}</b> {{ form.fr_k }}
+                                        </div>
                                         <span class="form-text text-muted help_text">{{ form.fr_k.help_text }}</span>
                                         <a href="https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.drawing.layout.spring_layout.html" target="_blank" rel="noopener"><small class="form-text">See Detail Explanation</small></a>
                                         {% for error in form.fr_k.errors %}
@@ -131,8 +133,12 @@
                             <div class="collapse" id="fa2-config">
                                 <div class="card card-body">
                                     <div class="container-fluid">
-                                        <b>{{ form.fa2_square.label }}</b> {{ form.fa2_square }}
-                                        <b>{{ form.fa2_log_base.label }}</b> {{ form.fa2_log_base }}
+                                        <div class="mb-3">
+                                            <b>{{ form.fa2_square.label }}</b> {{ form.fa2_square }}
+                                        </div>
+                                        <div class="mb-3">
+                                            <b>{{ form.fa2_log_base.label }}</b> {{ form.fa2_log_base }}
+                                        </div>
                                         {% for error in form.fa2_log_base.errors %}
                                         <small class="form-text text-danger">{{ error }}</small>
                                         {% endfor %}
