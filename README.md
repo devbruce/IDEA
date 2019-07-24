@@ -140,7 +140,7 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 
 ## Copyright
 
-Copyright © 2018 by DevBruce \<<Bruce93k@gmail.com>\>  
+Copyright 2018.DevBruce.All rights reserved.  
 Licensed under the GNU General Public License v3.0  
 
 <br><br>
