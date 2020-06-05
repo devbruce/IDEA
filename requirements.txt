@@ -1,6 +1,6 @@
 cycler==0.10.0
 decorator==4.3.0
-Django==2.1.2
+Django==2.2.13
 django-widget-tweaks==1.4.3
 fa2==0.2
 JPype1==0.6.3
