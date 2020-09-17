@@ -11,9 +11,9 @@
 It is hard for non-developer to visualize data.  
 But if you use IDEA, you can **visualize data easily.**  
 
-URL: **Deployment has been stopped.**
+- URL: Deployment has been stopped.
 
-> Please feel free to provide feedback If `Project: IDEA` have any problems
+- Please feel free to provide feedback If `Project: IDEA` have any problems.
 
 <br><br>
 
@@ -81,7 +81,7 @@ $ export DJANGO_SETTINGS_MODULE=config.settings.local
 
 <br><br>
 
-## Three Types Of Visualization
+## Two Types Of Visualization
 
 - Semantic Network Analysis (Interactive) (with [ECharts](http://echarts.baidu.com/) - [Les Miserables](http://www.echartsjs.com/examples/editor.html?c=graph))
 
@@ -102,7 +102,7 @@ Then click Visualization button!
 [![GitHub release](https://img.shields.io/github/release/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)
 [![GitHub Release Date](https://img.shields.io/github/release-date/DevBruce/IDEA.svg)](https://github.com/DevBruce/IDEA/releases)
 
-See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
+See [HISTORY.md](./HISTORY.md)
 
 <br><br>
 
@@ -113,11 +113,11 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 <br>
 
 <div align="center">
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/home.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/home.png" width="400" height="240">
+<a href="./preview/home.png">
+<img src="./preview/home.png" width="400" height="240">
 </a>
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/config.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/config.png" width="400" height="240">
+<a href="./preview/config.png">
+<img src="./preview/config.png" width="400" height="240">
 </a>
 </div>
 
@@ -128,11 +128,11 @@ See [HISTORY.md](https://github.com/DevBruce/IDEA/blob/master/HISTORY.md)
 <br>
 
 <div align="center">
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/sna.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/sna.png" width="400">
+<a href="./preview/sna.png">
+<img src="./preview/sna.png" width="400">
 </a>
-<a href="https://github.com/DevBruce/IDEA/blob/master/preview/wc.png">
-<img src="https://github.com/DevBruce/IDEA/blob/master/preview/wc.png" width="400">
+<a href="./preview/wc.png">
+<img src="./preview/wc.png" width="400">
 </a>
 </div>
 
@@ -147,4 +147,4 @@ Licensed under the GNU General Public License v3.0
 
 ## Reference
 
-See [NOTICE/README.md](https://github.com/DevBruce/IDEA/blob/master/NOTICE/README.md)
+See [NOTICE/README.md](./NOTICE/README.md)
